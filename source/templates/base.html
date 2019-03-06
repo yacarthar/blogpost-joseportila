@@ -1,6 +1,6 @@
 <nav>
-	<strong><a href="{{url_for('core.index')}}">HOME</a></strong>
-	<strong><a href="{{url_for('core.about')}}">ABOUT</a></strong>
+	<strong><a href="{{ url_for('core.index') }}">HOME</a></strong>
+	<strong><a href="{{ url_for('core.about') }}">ABOUT</a></strong>
 	{% if current_user.is_authenticated %}
 	<strong><a href="#">LOGOUT</a></strong>
 	<strong><a href="#">UPDATE</a></strong>

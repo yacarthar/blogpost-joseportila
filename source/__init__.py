@@ -9,9 +9,11 @@ app.config['SECRET_KEY'] = 'mysecret'
 from source.core.views import core
 from source.user.views import user
 from source.post.views import post
+from source.error_handler.error_handler import error_handler
 app.register_blueprint(core)
 app.register_blueprint(user)
 app.register_blueprint(post)
+app.register_blueprint(error_handler)
 
 ##### 2 DB #####
 basedir = os.path.abspath(os.path.dirname(__file__))
