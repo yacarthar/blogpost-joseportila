@@ -4,6 +4,13 @@ from datetime import datetime
 
 from source import db, lm
 from flask_login import UserMixin
+
+@lm.user_loader
+def load_user(id):
+	return User.query.get(id)
+
+
+
 class User(db.Models, UserMixin):
 	__tablename__ = 'user_table'
 	id = db.Column(db.Integer(), primary_key=True)
@@ -27,7 +34,7 @@ class Post(db.Models):
 	date = db.Column(db.String(30), default=datetime.utcnow, nullable=False)
 	content = db.Column(db.Text(), nullable=False)
 	author = db.relationship('user_table')
-	user_id = db.Column(db.String(30), db.ForeignKey('user_table.id') nullable=False)
+	user_id = db.Column(db.String(30), db.ForeignKey('user_table.id'), nullable=False)
 
 	def __init__(self, title, content, author):
 		self.title = title
