@@ -11,7 +11,7 @@ def load_user(id):
 
 
 
-class User(db.Models, UserMixin):
+class User(db.Model, UserMixin):
 	__tablename__ = 'user_table'
 	id = db.Column(db.Integer(), primary_key=True)
 	username = db.Column(db.String(30), unique=True, index =True, nullable=False)
@@ -24,11 +24,11 @@ class User(db.Models, UserMixin):
 		self.username = username
 		self.email = email
 		self.password_hash = generate_password_hash(password)
-	def check_password(self, passtest)
+	def check_password(self, passtest):
 		return check_password_hash(self.password_hash, passtest)
 
 
-class Post(db.Models):
+class Post(db.Model):
 	id = db.Column(db.Integer(), primary_key=True)
 	title = db.Column(db.String(30), nullable=False)
 	date = db.Column(db.String(30), default=datetime.utcnow, nullable=False)

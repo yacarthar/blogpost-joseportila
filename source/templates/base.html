@@ -2,13 +2,13 @@
 	<strong><a href="{{ url_for('core.index') }}">HOME</a></strong>
 	<strong><a href="{{ url_for('core.about') }}">ABOUT</a></strong>
 	{% if current_user.is_authenticated %}
-	<strong><a href="#">LOGOUT</a></strong>
-	<strong><a href="#">UPDATE</a></strong>
-	<strong><a href="#">SHOW POST</a></strong>
+	<strong><a href="{{ url_for('user.logout') }}">LOGOUT</a></strong>
+	<strong><a href="{{ url_for('user.account') }}">UPDATE</a></strong>
+	<strong><a href="{{ url_for('user.posts') }}">SHOW POST</a></strong>
 	<strong><a href="#">CREATE POST</a></strong>
 	{% else %}
-	<strong><a href="#">LOGIN</a></strong>
-	<strong><a href="#">REGISTER</a></strong>
+	<strong><a href="{{ url_for('user.login') }}">LOGIN</a></strong>
+	<strong><a href="{{ url_for('user.register') }}">REGISTER</a></strong>
 	{% endif %}
 </nav>
 

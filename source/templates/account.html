@@ -1,12 +1,14 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>========REGISTER========</h1>
+<h1>========ACCOUNT========</h1>
+<p>current email: {{form.email.data}}</p>
+<p>current username: {{form.username.data}}</p>
+<img src="{{ avatar }}">
 <form method="POST">
 	{{ form.hidden_tag() }}
 	{{ form.name.label }} {{ form.name() }}
 	{{ form.email.label }} {{ form.email() }}
-	{{ form.password.label }} {{ form.password() }}
-	{{ form.password_confirm.label }} {{ form.password_confirm() }}
+	{{ form.avatar.label }} {{ form.password() }}
 	{{ form.submit() }}
 </form>
 {% endblock %}
