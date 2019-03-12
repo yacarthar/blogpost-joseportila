@@ -29,9 +29,9 @@ def register():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        user_check = User.query.filter_by(username=form.name.data)
-        if user_check is not None and user_check.check_password(orm.name.password):
-            login_user()
+        user_check = User.query.filter_by(username=form.name.data).first()
+        if user_check.check_password(form.password.data) and user_check is not None:
+            login_user(user_check)
             flash('login success')
             next = request.args.get('next')
             if next == None or next['/'] != '/':
@@ -50,26 +50,27 @@ def logout():
 
 @user.route('/account', methods = ['POST', 'GET'])
 @login_required
-def update():
+def account():
     form = UpdateForm()
     if form.validate_on_submit():
         if form.avatar.data:
             username = current_user.username
             image_link = picture_handler(form.avatar.data, username)
             current_user.avatar = image_link
-        current_user.username = form.username.data
+        current_user.username = form.name.data
         current_user.email = form.email.data
         db.session.commit()
-        redirect(url_for('user.posts'))
+        redirect(url_for('user.account'))
     elif request.method == 'GET':
-        form.username.data = current_user.username
+        form.name.data = current_user.username
         form.email.data = current_user.email
     avatar = url_for('static', filename='profile_pics/' + current_user.avatar)
     return render_template('account.html', form=form, avatar=avatar)
 
 
-@user.route('/<username>')
-def posts():
+@user.route("/<username>")
+# @login_required
+def posts(username):
     page = request.args.get('page', 1, type=int)
     user = User.query.filter_by(username=username)
     posts = Post.query.filter_by(author=user).order_by(Post.date.desc()).paginate(page=page, per_page=5)

@@ -26,11 +26,11 @@ class RegisterForm(FlaskForm):
 	)
 	password_confirm = PasswordField('password', validators = [DataRequired()])
 	submit = SubmitField('Register!!!')
-	def validate_email(self):
-		if User.query.filter_by(email=self.email).first():
+	def validate_email(self, field):
+		if User.query.filter_by(email=field.data).first():
 			raise ValidationError('your email has been taken')
-	def validate_username(self):
-		if User.query.filter_by(username=self.username).first():
+	def validate_username(self, field):
+		if User.query.filter_by(username=field.data).first():
 			raise ValidationError('your username has been taken')
 		
 
@@ -39,11 +39,11 @@ class UpdateForm(FlaskForm):
 	email = StringField('email', validators = [DataRequired(), Email()])
 	avatar = FileField('avatar', validators = [DataRequired(), FileAllowed(['jpg', 'png'])])
 	submit = SubmitField('Update!!!')
-	def validate_email(self):
-		if User.query.filter_by(email=self.email).first():
+	def validate_email(self, field):
+		if User.query.filter_by(email=field.data).first():
 			raise ValidationError('your email has been taken')
-	def validate_username(self):
-		if User.query.filter_by(username=self.username).first():
+	def validate_username(self, field):
+		if User.query.filter_by(username=field.data).first():
 			raise ValidationError('your username has been taken')
 
 
