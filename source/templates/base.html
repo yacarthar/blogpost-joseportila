@@ -4,12 +4,18 @@
 	{% if current_user.is_authenticated %}
 	<strong><a href="{{ url_for('user.logout') }}">LOGOUT</a></strong>
 	<strong><a href="{{ url_for('user.account') }}">UPDATE</a></strong>
+	<strong><a href="{{ url_for('user.posts', username=current_user.username) }}">POSTS</a></strong>
 	<strong><a href="#">CREATE POST</a></strong>
 	{% else %}
 	<strong><a href="{{ url_for('user.login') }}">LOGIN</a></strong>
 	<strong><a href="{{ url_for('user.register') }}">REGISTER</a></strong>
 	{% endif %}
 </nav>
+	
+	{% if current_user.is_authenticated %}
+	<strong>Hello {{current_user.username}}</strong>
+	{% endif %}
+
 
 {% block content %}
 {% endblock %}

@@ -1,5 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}
-	<p><h1>All post here !!!: </h1></p>
-	# xu ly pagination
+	<h1>All post here !!!: </h1>
+
+	{% for user in user_list %}
+	<li>{{ user.id }} --- {{ user.username }} --- {{ user.email }}</li>
+	
+	{% endfor %}
+	
+
 {% endblock %}

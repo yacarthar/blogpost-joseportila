@@ -3,7 +3,7 @@
 <h1>========ACCOUNT========</h1>
 <p>current email: {{form.email.data}}</p>
 <p>current username: {{form.name.data}}</p>
-<img src="{{ avatar }}" width="128" height="128">
+<img src="{{ avatar }}" width="120" height="120">
 <form method="POST" action="" enctype="multipart/form-data">
 	{{ form.hidden_tag() }}
 	{{ form.name.label }} {{ form.name() }}

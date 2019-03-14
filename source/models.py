@@ -2,7 +2,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 
 
-from source import db, lm
+from source.main import db, lm
 from flask_login import UserMixin
 
 @lm.user_loader
@@ -31,6 +31,7 @@ class User(db.Model, UserMixin):
 
 
 class Post(db.Model):
+	__tablename__ = 'post_table'
 	id = db.Column(db.Integer(), primary_key=True)
 	title = db.Column(db.String(30), nullable=False)
 	date = db.Column(db.String(30), default=datetime.utcnow, nullable=False)

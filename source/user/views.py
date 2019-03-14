@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, url_for, session, redirect, flash
 from flask_login import login_required, login_user, logout_user, current_user
 
-from source import db
+from source.main import db
 from source.models import User, Post
 from source.user.forms import LoginForm, RegisterForm, UpdateForm
 from source.user.picture_handler import picture_handler
@@ -21,7 +21,7 @@ def register():
         new_user = User(name, email, password)
         db.session.add(new_user)
         db.session.commit()
-        redirect(url_for('user.login'))
+        return redirect(url_for('user.login'))
     return render_template('register.html', form=form)
 
 
@@ -34,7 +34,7 @@ def login():
             login_user(user_check)
             flash('login success')
             next = request.args.get('next')
-            if next == None or next['/'] != '/':
+            if next == None or next[0] != '/':
                 next = url_for('core.index')
             return redirect(next)
     return render_template('login.html', form=form)
@@ -60,7 +60,7 @@ def account():
         current_user.username = form.name.data
         current_user.email = form.email.data
         db.session.commit()
-        redirect(url_for('user.account'))
+        return redirect(url_for('user.account'))
     elif request.method == 'GET':
         form.name.data = current_user.username
         form.email.data = current_user.email
@@ -72,6 +72,6 @@ def account():
 @login_required
 def posts(username):
     page = request.args.get('page', 1, type=int)
-    user = User.query.filter_by(username=username)
+    user = User.query.filter_by(username=username).first()
     posts = Post.query.filter_by(author=user).order_by(Post.date.desc()).paginate(page=page, per_page=5)
     return render_template('posts.html', user = user, posts=posts)

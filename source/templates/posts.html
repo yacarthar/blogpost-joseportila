@@ -1,6 +1,22 @@
 {% extends 'base.html' %}
 {% block content %}
-<p>sống trên đời không đc thể chúng nó khi thường nhà này ko có anh tài</p>
+<p>List of {{ user.username }}'s posts</p>
+
+
+{% for post in posts.items %}
+<h3>Title: {{post.title}}</h3>
+<h3>Date: {{post.date.strftime('%Y-%m-%d')}}</h3>
+<h3>Author: {{post.user_id}}</h3>
+<h3>Content: </h3><br>
+<p>{{post.content}}</p>
+{% endfor %}
+
+<nav>
+{% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+<li><a href="{{url_for('user.posts', username=user.username, page=page)}}">{{ pagenum }}</a></li>
+{% endfor %}
+</nav>
+
 
 
 {% endblock %}
