@@ -51,21 +51,19 @@ def logout():
 @user.route('/account', methods = ['POST', 'GET'])
 @login_required
 def account():
-    form = UpdateForm()
-    if form.validate_on_submit():
-        if form.avatar.data:
-            username = current_user.username
-            image_link = picture_handler(form.avatar.data, username)
-            current_user.avatar = image_link
-        current_user.username = form.name.data
-        current_user.email = form.email.data
-        db.session.commit()
-        return redirect(url_for('user.account'))
-    elif request.method == 'GET':
-        form.name.data = current_user.username
-        form.email.data = current_user.email
-    avatar = url_for('static', filename='profile_pics/' + current_user.avatar)
-    return render_template('account.html', form=form, avatar=avatar)
+    cui = current_user.id
+    user_fix = User.query.get(cui)
+    #     if form.avatar.data:
+    #         image_link = picture_handler(form.avatar.data, current_user.username)
+    #         user_fix.avatar = image_link
+    #     user_fix.username = form.name.data
+    #     user_fix.email = form.email.data
+    #     db.session.commit()
+    #     return redirect(url_for('user.account'))
+    # if request.method == 'GET':
+    #     user = current_user
+    # return render_template('account_fake.html', form=form, user=user)
+    return render_template('account_test.html', user_fix=user_fix)
 
 
 @user.route("/user/<username>")

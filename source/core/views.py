@@ -4,38 +4,6 @@ from source.models import User
 core = Blueprint('core', __name__)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 @core.route('/')
 def index():
 	user_list = User.query.all()

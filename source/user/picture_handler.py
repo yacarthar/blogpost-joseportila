@@ -5,7 +5,7 @@ import os
 def picture_handler(image_load, username):
 	image_name = image_load.filename
 	ext = image_name.split('.')[-1]
-	storage_filename = str(username) + '.' + ext
+	storage_filename = image_name + '_' + str(username) + '.' + ext
 	filepath = os.path.join(current_app.root_path, 'static/profile_pics',
 		storage_filename
 	)
@@ -15,3 +15,6 @@ def picture_handler(image_load, username):
 	pic.save(filepath)
 	return storage_filename
 
+
+# a = picture_handler('/home/vernja/Pictures/Jinx.jpg', 'lonxon')
+# print(a)
