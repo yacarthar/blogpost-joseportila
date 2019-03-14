@@ -56,7 +56,8 @@ def account(user_id):
         # Forbidden, No Access
         abort(403)
     form = UpdateForm()
-    if form.validate_on_submit():
+    # if form.validate_on_submit():
+    if form.is_submitted():
         if form.avatar.data:
             image_link = picture_handler(form.avatar.data, current_user.username)
             user.avatar = image_link
@@ -65,6 +66,9 @@ def account(user_id):
         db.session.commit()
         flash('update success!!!')
         return redirect(url_for('user.account', user_id=user.id))
+    elif request.method == 'GET':
+        form.name.data = user.username
+        form.email.data = user.email
     return render_template('account1.html', form=form)
 
 
