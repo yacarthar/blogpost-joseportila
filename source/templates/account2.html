@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<p>UPDATE</p>
+
+<form method="POST" action="" enctype="multipart/form-data">
+	{{ form.hidden_tag() }}
+	{{ form.number.label }} {{ form.number() }}
+	{{ form.submit() }}
+</form>
+
+
+{% endblock %}

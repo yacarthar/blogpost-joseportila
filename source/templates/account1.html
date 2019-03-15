@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>========ACCOUNT========</h1>
+<p>{{ current_user.id }}</p>
+<p>{{ current_user.username }}</p>
+<p>{{ current_user.mail }}</p>
+<p>{{ current_user.avatar }}</p>
+
+<form method="POST" action="" >
+	{{ form.hidden_tag() }}
+	{{ form.name.label }} {{ form.name }}
+	{{ form.email.label }} {{ form.email }}
+	{{ form.avatar.label }} {{ form.avatar }}
+	{{ form.submit() }}
+</form>
+
+
+{% endblock %}

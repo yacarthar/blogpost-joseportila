@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, IntegerField
 from wtforms import ValidationError
 from wtforms.validators import DataRequired, EqualTo, Email
 
@@ -47,3 +47,7 @@ class UpdateForm(FlaskForm):
 			raise ValidationError('your username has been taken')
 
 
+class UpdateFormSimple(FlaskForm):
+	number = IntegerField('id', validators = [DataRequired()])
+	submit = SubmitField('Update!!!')
+	
