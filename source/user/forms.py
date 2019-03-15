@@ -35,9 +35,9 @@ class RegisterForm(FlaskForm):
 		
 
 class UpdateForm(FlaskForm):
-	name = StringField('name', validators = [DataRequired()])
-	email = StringField('email', validators = [DataRequired(), Email()])
-	avatar = FileField('avatar', validators = [DataRequired(), FileAllowed(['jpg', 'png'])])
+	name = StringField('name')
+	email = StringField('email', validators = [Email()])
+	avatar = FileField('avatar', validators = [FileAllowed(['jpg', 'png'])])
 	submit = SubmitField('Update!!!')
 	def validate_email(self, field):
 		if User.query.filter_by(email=field.data).first():

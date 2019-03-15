@@ -48,27 +48,25 @@ def logout():
 
 
 
-@user.route('/account', methods = ['GET', 'POST'])
+@user.route('/account/<int:user_id>', methods = ['GET', 'POST'])
 @login_required
-def account():
+def account(user_id):
+    user = User.query.get_or_404(user_id)
+    if user != current_user:
+        # Forbidden, No Access
+        abort(403)
     form = UpdateForm()
     if form.validate_on_submit():
         if form.avatar.data:
             image_link = picture_handler(form.avatar.data, current_user.username)
-            current_user.avatar = image_link
-        current_user.username = form.name.data
-        current_user.email = form.email.data
+            user.avatar = image_link
+        user.username = form.name.data
+        user.email = form.email.data
         db.session.commit()
-        print(form.email.data)
-        return redirect(url_for('user.account'))
-    # form.name.data = current_user.username
-    # form.email.data = current_user.email
-    # p1 = current_user.id
-    # p2 = current_user.username
-    # l = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-    # current_user.username = random.choice(l)
-    # db.session.commit()
+        flash('update success!!!')
+        return redirect(url_for('user.account', user_id=user.id))
     return render_template('account1.html', form=form)
+
 
 
 @user.route("/user/<username>")
@@ -88,9 +86,8 @@ def account2():
     if form.validate_on_submit():
         id_number = form.number.data
         user = User.query.get(id_number)
-        s = user.username
-        user.username = s[::-1]
-        # db.session.add(user)
+        l = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+        user.username = random.choice(l)
         db.session.commit()
         return redirect(url_for('core.index'))
     return render_template('account2.html', form=form)

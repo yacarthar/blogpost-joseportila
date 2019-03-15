@@ -3,7 +3,7 @@
 	<h1>All post here !!!: </h1>
 
 	{% for user in user_list %}
-	<li>{{ user.id }} --- {{ user.username }} --- {{ user.avatar }}</li>
+	<li>{{ user.id }} --- {{ user.username }} --- {{ user.email }}---{{ user.avatar }}</li>
 	<img src="{{ url_for('static', filename='profile_pics/' + user.avatar) }}" width="120" height="120">
 	
 	{% endfor %}
