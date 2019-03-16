@@ -6,7 +6,6 @@ from wtforms import ValidationError
 from wtforms.validators import DataRequired, EqualTo, Email
 
 from source.models import User
-from flask_login import current_user
 
 
 class LoginForm(FlaskForm):

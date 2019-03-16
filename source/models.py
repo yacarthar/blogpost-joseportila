@@ -34,10 +34,11 @@ class Post(db.Model):
 	__tablename__ = 'post_table'
 	id = db.Column(db.Integer, primary_key=True)
 	title = db.Column(db.String(30), nullable=False)
-	date = db.Column(db.String(30), default=datetime.utcnow, nullable=False)
+	date = db.Column(db.DateTime(), default=datetime.utcnow, nullable=False)
 	content = db.Column(db.Text(), nullable=False)
 	# author = db.relationship('user_table')
 	user_id = db.Column(db.String(30), db.ForeignKey('user_table.id'), nullable=False)
+	# author_name = db.Column(db.String(30), db.ForeignKey('user_table.username'), nullable=False)
 
 	def __init__(self, title, content, user_id):
 		self.title = title

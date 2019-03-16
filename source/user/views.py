@@ -81,17 +81,3 @@ def posts(username):
     posts = Post.query.filter_by(author=user).order_by(Post.date.desc()).paginate(page=page, per_page=5)
     return render_template('posts.html', user = user, posts=posts)
 
-
-
-@user.route('/account2', methods = ['GET', 'POST'])
-@login_required
-def account2():
-    form = UpdateFormSimple()
-    if form.validate_on_submit():
-        id_number = form.number.data
-        user = User.query.get(id_number)
-        l = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-        user.username = random.choice(l)
-        db.session.commit()
-        return redirect(url_for('core.index'))
-    return render_template('account2.html', form=form)

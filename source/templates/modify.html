@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<p><strong>MODIFY POST</strong></p>
+<form method="POST" action="">
+	{{ form.hidden_tag() }}
+	{{form.title.label}} <br>
+	{{form.title()}} <br>
+	{{form.content.label}} <br>
+	{{form.content()}} <br>
+	{{form.submit()}} <br>
+</form>
+<p>list of {{current_user.username}} post</p>
+{% for post in post_list.items %}
+<li>{{ post.title}}</li>
+{% endfor %}
+
+{% endblock %}

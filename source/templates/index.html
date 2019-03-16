@@ -1,12 +1,25 @@
 {% extends 'base.html' %}
 {% block content %}
-	<h1>All post here !!!: </h1>
+<p>List of all posts</p>
 
-	{% for user in user_list %}
-	<li>{{ user.id }} --- {{ user.username }} --- {{ user.email }}---{{ user.avatar }}</li>
-	<img src="{{ url_for('static', filename='profile_pics/' + user.avatar) }}" width="120" height="120">
-	
-	{% endfor %}
-	
+
+
+
+{% for post in posts.items %}
+<h3>{{ post.id }} <a href="{{ url_for('post.show', post_id=post.id) }}"> {{post.title}}</a></h3>
+<h4>Date: {{post.date.strftime('%Y-%m-%d')}}</h4>
+<h4>Author: <a href="{{ url_for('user.posts', username=current_user.username) }}">{{post.author.username}}</a></h4>
+<h4>Content: </h4>
+<p>{{post.content[:180]}} 
+	<a href="{{ url_for('post.show', post_id=post.id) }}">... more</a>
+</p>
+
+{% if post.author.id == current_user.id %}
+<a href="{{ url_for('post.delete', post_id=post.id) }}">Delete post</a>
+{% endif %}
+
+<p>-------------------------------------------------</p>
+{% endfor %}
+
 
 {% endblock %}

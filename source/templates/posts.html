@@ -4,11 +4,19 @@
 
 
 {% for post in posts.items %}
-<h3>Title: {{post.title}}</h3>
-<h3>Date: {{post.date.strftime('%Y-%m-%d')}}</h3>
-<h3>Author: {{post.user_id}}</h3>
-<h3>Content: </h3><br>
-<p>{{post.content}}</p>
+<h3>Title: <a href="{{ url_for('post.show', post_id=post.id) }}"> {{post.title}}</a></h3>
+<h4>Date: {{post.date.strftime('%Y-%m-%d')}}</h4>
+<h4>Author: <a href="{{ url_for('user.posts', username=user.username) }}">{{post.author.username}}</a></h4>
+<h4>Content: </h4>
+<p>{{post.content[:180]}}
+	<a href="{{ url_for('post.show', post_id=post.id) }}">... more</a>
+</p>
+
+{% if post.author.id == current_user.id %}
+<a href="{{ url_for('post.delete', post_id=post.id) }}">Delete post</a>
+{% endif %}
+
+<p>-------------------------------------------------</p>
 {% endfor %}
 
 <nav>
