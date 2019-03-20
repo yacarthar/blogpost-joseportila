@@ -1,3 +1,4 @@
+gunicorn # For Deploy
 alembic==0.9.9
 blinker==1.4
 certifi==2018.11.29
