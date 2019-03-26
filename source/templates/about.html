@@ -1,11 +1,15 @@
 {% extends 'base.html' %}
 {% block content %}
-	<p><h1>ABOUT US: </h1></p>
-	<h1>All users here !!!: </h1>
+	<div class="current-page jumbotron">
+	<h1>ABOUT US: </h1>
+	<p>This is the website for sharing experience in IT Troubleshooting</p>
+	</div>
 
+	<div class="list">
+	<h1>Contributors: </h1>
 	{% for user in user_list %}
 	<li>{{ user.id }} --- {{ user.username }} --- {{ user.email }}---{{ user.avatar }}</li>
 	<img src="{{ url_for('static', filename='profile_pics/' + user.avatar) }}" width="64" height="64">
-	
 	{% endfor %}
+	</div>
 {% endblock %}

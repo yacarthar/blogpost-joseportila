@@ -7,12 +7,11 @@
 <p>
 {% if post_sample.author.id == current_user.id %}
 	<a href="{{ url_for('post.delete', post_id=post_sample.id) }}" >delete</a>
-	<a href="{{ url_for('post.update', post_id=post_sample.id) }}" >delete</a>
 {% endif %}
 </p>
 
 <br>
 <p>POST content: </p>
-<p>{{post_sample.content}}</p>
+<p style="white-space: pre-wrap;">{{ post_sample.content}}</p>
 
 {% endblock %}
