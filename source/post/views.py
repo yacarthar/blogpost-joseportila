@@ -19,12 +19,12 @@ def create():
                         content = form.content.data,
                         user_id = current_user.id
         )
-        print('=======valid=======')
+        print('=======form valid=======')
         db.session.add(new_post)
         db.session.commit()
         flash('Your post has been created !!!')
         return redirect(url_for('user.posts', username=current_user.username))
-    print('=======not valid=======')
+    print('=======form not valid=======')
     post_list = Post.query.filter_by(author=current_user).all()
     return render_template('modify.html', form=form, post_list=post_list)
 
