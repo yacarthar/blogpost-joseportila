@@ -1,4 +1,6 @@
-from flask import Blueprint, render_template, url_for, redirect, session, flash
+from flask import (Blueprint, render_template, url_for,
+    redirect, session, flash, current_app, request, send_from_directory
+)
 
 
 from flask_login import login_required, current_user
@@ -6,7 +8,7 @@ from source.main import db, lm
 from source.post.forms import PostForm
 from source.models import User, Post
 from datetime import datetime
-
+import os
 post = Blueprint('post', __name__)
 
 #CREATE
@@ -24,7 +26,8 @@ def create():
         db.session.commit()
         flash('Your post has been created !!!')
         return redirect(url_for('user.posts', username=current_user.username))
-    print('=======form not valid=======')
+    else:
+        print('=======form not valid=======')
     post_list = Post.query.filter_by(author=current_user).all()
     return render_template('modify.html', form=form, post_list=post_list)
 
@@ -68,3 +71,21 @@ def delete(post_id):
     return redirect(url_for('user.posts', username=current_user.username))
     
 
+from flask_ckeditor import upload_success, upload_fail
+
+@post.route('/upload', methods=['POST'])
+def upload():
+    f = request.files.get('upload')
+    # Add more validations here
+    extension = f.filename.rsplit('.')[1].lower()
+    if extension not in ['jpg', 'gif', 'png', 'jpeg']:
+        return upload_fail(message='Image only!')
+    f.save(os.path.join(current_app.root_path, 'static/post_image', f.filename))
+    url = url_for('post.uploaded_files', filename=f.filename)
+    return upload_success(url=url) # return upload_success call
+
+
+@post.route('/files/<path:filename>')
+def uploaded_files(filename):
+    path = os.path.join(current_app.root_path, 'static/post_image')
+    return send_from_directory(path, filename)

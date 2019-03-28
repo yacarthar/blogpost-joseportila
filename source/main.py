@@ -2,12 +2,19 @@ from flask import Flask, Blueprint
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
+from flask_ckeditor import CKEditor
 import os
 app = Flask(__name__)
+
+##### 0 CKEditor #####
+ckeditor = CKEditor(app)
 app.config['SECRET_KEY'] = 'mysecret'
+app.config['CKEDITOR_FILE_UPLOADER'] = 'post.upload' # this value can be endpoint or url
+basedir = os.path.abspath(os.path.dirname(__file__))
+app.config['UPLOADED_PATH'] = os.path.join(basedir, 'static/post_image')
+
 
 ##### 1 DB #####
-basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = ('sqlite:///' 
 	+ os.path.join(basedir + 'data.sqlite')
 )

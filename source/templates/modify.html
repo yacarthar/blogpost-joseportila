@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% block content %}
-<script src="../static/ckeditor/ckeditor.js"></script>
 <h1 class="current-page" style="text-align: center;">========MODIFY POST========</h1>
 
 <div class="center-block" style="width:65%; margin: auto;">
@@ -14,9 +13,9 @@
 			{{ form.content.label(class="form-group") }}
 			{{form.content(class='form-control', )}}
 		</div>
-		<script>
-        	CKEDITOR.replace( 'content' );
-    	</script>
+		{{ ckeditor.load() }}
+		{{ ckeditor.config(name='content') }}
+
 		<div class="form-group">
 		    {{ form.submit(class="btn btn-primary") }}
 		</div>
