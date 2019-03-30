@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, url_for, session, redirect, flash
 from flask_login import login_required, login_user, logout_user, current_user
 
-from source.main import db
+from source import db
 from source.models import User, Post
 from source.user.forms import LoginForm, RegisterForm, UpdateForm, UpdateFormSimple
 from source.user.picture_handler import picture_handler

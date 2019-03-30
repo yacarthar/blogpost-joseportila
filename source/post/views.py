@@ -4,7 +4,7 @@ from flask import (Blueprint, render_template, url_for,
 
 
 from flask_login import login_required, current_user
-from source.main import db, lm
+from source import db, lm
 from source.post.forms import PostForm
 from source.models import User, Post
 from datetime import datetime
