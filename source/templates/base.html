@@ -47,6 +47,25 @@
 	      {% endif %}
 	    </ul>
 	  </div>
+
+	  <form class="form-inline my-2 my-lg-0" action="{{url_for('post.search')}}">
+			
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="keyword">
+
+		  <select class="custom-select" id="inputGroupSelect04" aria-label="Example select with button addon" name="search_by">
+		    <option selected value="title">Title</option>
+		    <option value="author">Author</option>
+		    <option value="content">Content</option>
+		  </select>
+
+		  <select class="custom-select" id="inputGroupSelect04" aria-label="Example select with button addon" name="sort">
+		    <option selected value="date">Date</option>
+		    <option value="alphabet">Alphabet</option>
+		  </select>			
+
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+
+    </form>
 	</nav>
 	
 	{% if current_user.is_authenticated %}

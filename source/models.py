@@ -37,8 +37,8 @@ class Post(db.Model):
 	date = db.Column(db.DateTime(), default=datetime.utcnow, nullable=False)
 	content = db.Column(db.Text(), nullable=False)
 	# author = db.relationship('user_table')
-	user_id = db.Column(db.String(30), db.ForeignKey('user_table.id'), nullable=False)
-	# author_name = db.Column(db.String(30), db.ForeignKey('user_table.username'), nullable=False)
+	user_id = db.Column(db.String(20), db.ForeignKey('user_table.id'), nullable=False)
+	# author = db.Column(db.String(30), db.ForeignKey('user_table.username'), nullable=False)
 
 	def __init__(self, title, content, user_id):
 		self.title = title

@@ -89,3 +89,21 @@ def upload():
 def uploaded_files(filename):
     path = os.path.join(current_app.root_path, 'static/post_image')
     return send_from_directory(path, filename)
+
+@post.route('/search')
+def search():
+    keyword = request.args.get('keyword')
+    search_by = request.args.get('search_by')
+    # title, author, content
+    sort = request.args.get('sort')
+    # date, alphabet
+
+    # query
+    if search_by == 'title':
+        pass
+        post_sample = Post.query.filter()
+    elif search_by == 'author':
+        pass
+    else:
+        pass
+    return render_template('search.html',keyword=keyword,search_by=search_by, sort=sort)
