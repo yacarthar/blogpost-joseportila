@@ -8,9 +8,8 @@
 <h4>Date: {{post.date.strftime('%Y-%m-%d')}}</h4>
 <h4>Author: <a href="{{ url_for('user.posts', username=user.username) }}">{{post.author.username}}</a></h4>
 <h4>Content: </h4>
-<p>{{post.content[:180]}}
-	<a href="{{ url_for('post.show', post_id=post.id) }}">... more</a>
-</p>
+<p>{{post.content[:180]|safe}}</p>
+<p><a href="{{ url_for('post.show', post_id=post.id) }}">... more</a></p>
 
 {% if post.author.id == current_user.id %}
 <a href="{{ url_for('post.delete', post_id=post.id) }}">Delete post</a>

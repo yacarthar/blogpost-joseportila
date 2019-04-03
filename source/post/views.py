@@ -33,7 +33,7 @@ def create():
 
 
 #SHOW
-@post.route('/post/<post_id>/detail')
+@post.route('/post/<int:post_id>/detail')
 @login_required
 def show(post_id):
     post_sample = Post.query.get(post_id)
@@ -41,7 +41,7 @@ def show(post_id):
 
 
 #UPDATE
-@post.route('/post/<post_id>/update', methods = ['GET', 'POST'])
+@post.route('/post/<int:post_id>/update', methods = ['GET', 'POST'])
 @login_required
 def update(post_id):
     post_sample = Post.query.get_or_404(post_id)
@@ -59,7 +59,7 @@ def update(post_id):
 
 
 #DELETE
-@post.route('/post/<post_id>/delete')
+@post.route('/post/<int:post_id>/delete')
 @login_required
 def delete(post_id):
     post_sample = Post.query.get_or_404(post_id)
@@ -92,6 +92,7 @@ def uploaded_files(filename):
 
 @post.route('/search')
 def search():
+    page = request.args.get('page', 1, type=int)
     keyword = request.args.get('keyword')
     search_by = request.args.get('search_by')
     # title, author, content
@@ -100,10 +101,15 @@ def search():
 
     # query
     if search_by == 'title':
-        pass
-        post_sample = Post.query.filter()
+        sample = Post.query.filter(Post.title.like(f'%{keyword}%'))
     elif search_by == 'author':
-        pass
+        sample = Post.query.join(User).filter(User.username.like(f'%{keyword}%'))
     else:
-        pass
-    return render_template('search.html',keyword=keyword,search_by=search_by, sort=sort)
+        sample = Post.query.filter(Post.content.like(f'%{keyword}%'))
+
+    if sort == 'date':
+        post_sorted = sample.order_by(Post.date.desc()).paginate(page=page, per_page=5)
+    else:
+        post_sorted = sample.order_by(Post.author.username).paginate(page=page, per_page=5)
+
+    return render_template('search.html', post_sorted=post_sorted)

@@ -1,23 +1,11 @@
 from source.models import User, Post
 from source import db
 
-# sample_post = Post.query.all()
-# for item in sample_post:
-# 	db.session.delete(item)
 
-# sample_post = User.query.all()
-# for item in sample_post:
-# 	db.session.delete(item)
+# p = Post.query.join(User).filter(User.username.like(r'%ad%')).all()
+# print(p)
 
-# for instance in db.session.query(User).order_by(User.id):
-# 	print(instance.username, instance.email)
-
-# for item in User.query.all():
-# 	print(item.username)
-
-a = User.query.one()
-print(a)
-b = Post.query.all()
-print(b)
-c = Post.query.first()
-print(c)
+p = Post.query.get(14)
+cont = p.content
+print(dir(cont))
+print(cont.title)
