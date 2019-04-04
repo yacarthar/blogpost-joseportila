@@ -19,7 +19,9 @@ def create():
     if form.validate_on_submit():
         new_post = Post(title = form.title.data,
                         content = form.content.data,
-                        user_id = current_user.id
+                        user_id = current_user.id,
+                        thumb = '',
+                        desc = form.desc.data
         )
         print('=======form valid=======')
         db.session.add(new_post)
