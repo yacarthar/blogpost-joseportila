@@ -1,18 +1,22 @@
 {% extends 'base.html' %}
 {% block content %}
-<p>POST ID: {{post_sample.id}}</p>
-<p>POST TITLE: {{post_sample.title}}</p>
-<p>POST date: {{post_sample.date.strftime('%Y-%m-%d')}}</p>
-<p>Author: <a href="{{ url_for('user.posts', username=post_sample.author.username) }}">{{ post_sample.author.username }}</a></p>
-<p>
-{% if post_sample.author.id == current_user.id %}
-	<a href="{{ url_for('post.delete', post_id=post_sample.id) }}" >delete</a>
-{% endif %}
-</p>
+<div class="container">
+  <div class="card" >
+    <div class="card-body">
+			<p>POST ID: {{post_sample.id}}</p>
+			<p>POST TITLE: {{post_sample.title}}</p>
+			<p>POST date: {{post_sample.date.strftime('%Y-%m-%d')}}</p>
+			<p>Author: <a href="{{ url_for('user.posts', username=post_sample.author.username) }}">{{ post_sample.author.username }}</a></p>
+			<p>
+			{% if post_sample.author.id == current_user.id %}
+				<a href="{{ url_for('post.delete', post_id=post_sample.id) }}" >delete</a>
+			{% endif %}
+			</p>
+			<p>POST content: </p>
 
-<br>
-<p>POST content: </p>
-
-<p>{{ post_sample.content|safe}}</p>
+			<p>{{ post_sample.content|safe}}</p>
+   	</div>
+  </div>
+</div>
 
 {% endblock %}
