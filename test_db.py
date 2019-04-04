@@ -5,7 +5,8 @@ from source import db
 # p = Post.query.join(User).filter(User.username.like(r'%ad%')).all()
 # print(p)
 
-p = Post.query.get(14)
-cont = p.content
-print(dir(cont))
-print(cont.title)
+p = Post.query.filter(Post.id > 16)
+# i=0
+for item in p:
+	db.session.delete(item)
+	db.session.commit()

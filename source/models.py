@@ -36,11 +36,15 @@ class Post(db.Model):
 	title = db.Column(db.String(30), nullable=False)
 	date = db.Column(db.DateTime(), default=datetime.utcnow, nullable=False)
 	content = db.Column(db.Text(), nullable=False)
+	desc = db.Column(db.Text())
+	thumb = db.Column(db.String(100))
 	# author = db.relationship('user_table')
 	user_id = db.Column(db.String(20), db.ForeignKey('user_table.id'), nullable=False)
 	# author = db.Column(db.String(30), db.ForeignKey('user_table.username'), nullable=False)
 
-	def __init__(self, title, content, user_id):
+	def __init__(self, title, content, user_id, thumb, desc):
 		self.title = title
 		self.content = content
 		self.user_id = user_id
+		self.thumb = thumb
+		self.desc = desc

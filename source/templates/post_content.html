@@ -3,8 +3,8 @@
 <div class="container">
   <div class="card" >
     <div class="card-body">
+			<h1><strong><p>POST TITLE: {{post_sample.title}}</p></strong></h1>
 			<p>POST ID: {{post_sample.id}}</p>
-			<p>POST TITLE: {{post_sample.title}}</p>
 			<p>POST date: {{post_sample.date.strftime('%Y-%m-%d')}}</p>
 			<p>Author: <a href="{{ url_for('user.posts', username=post_sample.author.username) }}">{{ post_sample.author.username }}</a></p>
 			<p>
