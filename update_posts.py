@@ -4,13 +4,13 @@ from source import db
 from bs4 import BeautifulSoup
 import requests
 
-def update_post(url, post_quota=10000):
+
+def update_post(url):
     payload = 1
     while True:
         source_code = requests.get(url, params=str(payload))
         soup = BeautifulSoup(source_code.text, 'html.parser')
-        posts = soup.find_all("li", {"class":"listitem clearfix"})
-        i = 0
+        posts = soup.find_all("li", {"class": "listitem clearfix"})
         for post in posts:
             title = post.find('a', {'class': 'title'})
             # print(title.text[1:-1])
@@ -21,10 +21,10 @@ def update_post(url, post_quota=10000):
             # print(desc)
             single_post = requests.get(link)
             soup_single_post = BeautifulSoup(single_post.text, 'html.parser')
-            content_raw = soup_single_post.find("div", {"class":"content-detail textview"})
+            content_raw = soup_single_post.find("div", {"class": "content-detail textview"})
             content = str(content_raw)
             # print('----------------------------------------------------')
-            if Post.query.filter_by(title=title.text[1:-1]).first() == None:
+            if Post.query.filter_by(title=title.text[1:-1]).first() is None:
                 new_post = Post(
                     title=title.text[1:-1],
                     content=content,
@@ -33,11 +33,9 @@ def update_post(url, post_quota=10000):
                     desc=desc
                 )
                 db.session.add(new_post)
-                db.session.commit()    
-            
-
+                db.session.commit()
         # check next_page
-        button_next_page = soup.find("div", {"class":"pagination-container"})
+        button_next_page = soup.find("div", {"class": "pagination-container"})
         p_href = button_next_page.ul.li.a.get('href')[-1]
         if int(p_href) > int(payload):
             payload = p_href
@@ -46,5 +44,5 @@ def update_post(url, post_quota=10000):
 
 
 if __name__ == '__main__':
-    url = 'https://quantrimang.com/unix-va-linux'
-    update_post(url)
+    url_page = 'https://quantrimang.com/unix-va-linux'
+    update_post(url_page)

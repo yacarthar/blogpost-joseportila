@@ -1,4 +1,4 @@
-from source.models import User, Post
+from source.models import Post
 from source import db
 
 

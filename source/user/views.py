@@ -1,12 +1,11 @@
-from flask import Blueprint, render_template, request, url_for, session, redirect, flash
+from flask import Blueprint, render_template, request, url_for, redirect, flash
 from flask_login import login_required, login_user, logout_user, current_user
+from werkzeug.exceptions import abort
 
 from source import db
 from source.models import User, Post
-from source.user.forms import LoginForm, RegisterForm, UpdateForm, UpdateFormSimple
+from source.user.forms import LoginForm, RegisterForm, UpdateForm
 from source.user.picture_handler import picture_handler
-import random
-
 
 user = Blueprint('user', __name__)
 
@@ -33,10 +32,10 @@ def login():
         if user_check.check_password(form.password.data) and user_check is not None:
             login_user(user_check)
             flash('login success')
-            next = request.args.get('next')
-            if next == None or next[0] != '/':
-                next = url_for('core.index')
-            return redirect(next)
+            next_page = request.args.get('next')
+            if next_page is None or next_page[0] != '/':
+                next_page = url_for('core.index')
+            return redirect(next_page)
     return render_template('login.html', form=form)
 
 
@@ -47,12 +46,11 @@ def logout():
     return redirect(url_for('core.index'))
 
 
-
-@user.route('/account/<int:user_id>', methods = ['GET', 'POST'])
+@user.route('/account/<int:user_id>', methods=['GET', 'POST'])
 @login_required
 def account(user_id):
-    user = User.query.get_or_404(user_id)
-    if user != current_user:
+    sample_user = User.query.get_or_404(user_id)
+    if sample_user != current_user:
         # Forbidden, No Access
         abort(403)
     form = UpdateForm()
@@ -60,24 +58,23 @@ def account(user_id):
     if form.is_submitted():
         if form.avatar.data:
             image_link = picture_handler(form.avatar.data, current_user.username)
-            user.avatar = image_link
-        user.username = form.name.data
-        user.email = form.email.data
+            sample_user.avatar = image_link
+        sample_user.username = form.name.data
+        sample_user.email = form.email.data
         db.session.commit()
         flash('update success!!!')
-        return redirect(url_for('user.account', user_id=user.id))
+        return redirect(url_for('user.account', user_id=sample_user.id))
     elif request.method == 'GET':
-        form.name.data = user.username
-        form.email.data = user.email
+        form.name.data = sample_user.username
+        form.email.data = sample_user.email
     return render_template('account1.html', form=form)
-
 
 
 @user.route("/user/<username>")
 @login_required
 def posts(username):
     page = request.args.get('page', 1, type=int)
-    user = User.query.filter_by(username=username).first()
-    posts = Post.query.filter_by(author=user).order_by(Post.date.desc()).paginate(page=page, per_page=5)
-    return render_template('posts.html', user = user, posts=posts)
+    user_query = User.query.filter_by(username=username).first()
+    posts_query = Post.query.filter_by(author=user_query).order_by(Post.date.desc()).paginate(page=page, per_page=5)
+    return render_template('posts.html', user=user_query, posts=posts_query)
 
