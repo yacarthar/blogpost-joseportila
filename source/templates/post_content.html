@@ -3,18 +3,16 @@
 <div class="container">
   <div class="card" >
     <div class="card-body">
-			<h1><strong><p>POST TITLE: {{post_sample.title}}</p></strong></h1>
-			<p>POST ID: {{post_sample.id}}</p>
-			<p>POST date: {{post_sample.date.strftime('%Y-%m-%d')}}</p>
-			<p>Author: <a href="{{ url_for('user.posts', username=post_sample.author.username) }}">{{ post_sample.author.username }}</a></p>
-			<p>
-			{% if post_sample.author.id == current_user.id %}
-				<a href="{{ url_for('post.delete', post_id=post_sample.id) }}" >delete</a>
-			{% endif %}
-			</p>
+			<h1><strong><p>{{post['post_title']}}</p></strong></h1>
+			<p><a href="#">Update</a></p>
+			<p><a href="#">Delete</a></p>
+			<p>POST ID: {{post['post_id']}}</p>
+			<p>POST date: {{post['post_time']}}</p>
+			<p>Path: {{post['post_path']}} </p>
+
 			<p>POST content: </p>
 
-			<p>{{ post_sample.content|safe}}</p>
+			<p>{{ post['post_content']}}</p>
    	</div>
   </div>
 </div>

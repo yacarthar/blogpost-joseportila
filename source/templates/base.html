@@ -19,59 +19,55 @@
 	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
 	    <ul class="navbar-nav mr-auto">
 	      <li class="nav-item active">
-	        <a class="nav-link" href="{{ url_for('core.about') }}">About <span class="sr-only">(current)</span></a>
+	        <a class="nav-link" href="#">About <span class="sr-only">(current)</span></a>
 	      </li>
-	      {% if current_user.is_authenticated %}
+	      <!-- {% if current_user.is_authenticated %} -->
 	      <li class="nav-item">
-	        <a class="nav-link" href="{{ url_for('user.account', user_id=current_user.id) }}">Account</a>
+	        <a class="nav-link" href="#">Account</a>
 	      </li>
 	      <li class="nav-item dropdown">
 	        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	          Post Menu
 	        </a>
 	        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-	          <a class="dropdown-item" href="{{ url_for('user.posts', username=current_user.username) }}">Post</a>
-	          <a class="dropdown-item" href="{{ url_for('post.create') }}">Create post</a>
+	          <a class="dropdown-item" href="#">Post</a>
+	          <a class="dropdown-item" href="#">Create post</a>
 	        </div>
 	      </li>
 	      <li class="nav-item">
-	        <a class="nav-link" href="{{ url_for('user.logout') }}" tabindex="-1">Logout</a>
+	        <a class="nav-link" href="#" tabindex="-1">Logout</a>
 	      </li>
-	      {% else %}
+	      <!-- {% else %} -->
 	      <li class="nav-item">
-	        <a class="nav-link" href="{{ url_for('user.login') }}" tabindex="-1">Login</a>
+	        <a class="nav-link" href="#" tabindex="-1">Login</a>
 	      </li>
 	      <li class="nav-item">
-	        <a class="nav-link" href="{{ url_for('user.register') }}" tabindex="-1">Register</a>
+	        <a class="nav-link" href="#" tabindex="-1">Register</a>
 	      </li>
-	      {% endif %}
+	      <!-- {% endif %} -->
 	    </ul>
 	  </div>
 
-	  <form class="form-inline my-2 my-lg-0" action="{{url_for('post.search')}}">
+	<form class="form-inline my-2 my-lg-0" action="{{ url_for('post.search') }}">
 			
-      <input class="form-control mr-sm-2" type="search" placeholder="Search posts..." aria-label="Search" name="keyword">
+    <input class="form-control mr-sm-2" type="search" placeholder="Search posts..." aria-label="Search" name="keyword">
 
 		  <select class="custom-select" id="inputGroupSelect04" aria-label="Example select with button addon" name="search_by">
 		    <option selected value="title">Title</option>
-		    <option value="author">Author</option>
+		    <option value="topic">Topic</option>
 		    <option value="content">Content</option>
 		  </select>
 
 		  <select class="custom-select" id="inputGroupSelect04" aria-label="Example select with button addon" name="sort">
 		    <option selected value="date">Date</option>
-		    <option value="alphabet">Alphabet</option>
+		    <option value="title">Title</option>
 		  </select>			
 
       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-
     </form>
 	</nav>
 	
-	{% if current_user.is_authenticated %}
-	<strong>Hello {{current_user.username}}</strong>
-	<img src="{{ url_for('static', filename='profile_pics/' + current_user.avatar) }}"  width="64" height="64">
-	{% endif %}
+
 
 
 {% block content %}

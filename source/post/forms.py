@@ -1,12 +1,12 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
+from wtforms import TextField, SubmitField
 from flask_ckeditor import CKEditorField
 from wtforms.validators import DataRequired
 
-
 class PostForm(FlaskForm):
-	title = StringField('title', validators=[DataRequired()])
-	# content = TextAreaField('content', validators = [DataRequired()])
-	desc = StringField('Description', validators=[DataRequired()])
-	content = CKEditorField('content', validators=[DataRequired()])
+	title = TextField('title', validators=[DataRequired()])
+	content = TextField('content', validators=[DataRequired()])
+	path = TextField('path', validators=[DataRequired()])
+	url = TextField('url', validators=[DataRequired()])
+	time = TextField('time', validators=[DataRequired()])
 	submit = SubmitField('submit')
