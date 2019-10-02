@@ -12,12 +12,12 @@
   {% for post in posts %}
   <div class="card" >
     <div class="card-body">
-            <h3>{{ post["post_id"] }} 
-            <a href="{{ url_for('post.show', post_id=post['post_id'])}}"> {{post['post_title']}}</a></h3>
+            <h3>{{ post["pid"] }} 
+            <a href="{{ url_for('post.show', pid=post['pid'])}}"> {{post['title']}}</a></h3>
 
-            <h4>Date: {{post['post_time']}}</h4>
+            <h4>Date: {{post['time']}}</h4>
 
-            <p>{{ post['post_content'][:40] }}<a href="{{ url_for('post.show', post_id=post['post_id'])}}">... more</a></p>
+            <p>{{ post['desc'] }}<a href="{{ url_for('post.show', pid=post['pid'])}}">... more</a></p>
     </div>
   </div>
   {% endfor %}

@@ -11,8 +11,7 @@ mydb = myclient["zed"]
 mycol = mydb["post"]
 
 
-app = Celery('Post_queue',broker='redis://localhost:6379/0')
-app.config_from_object('config')
+app = Celery('post',broker='redis://localhost:6379/0')
 
 
 @app.task
@@ -51,19 +50,14 @@ def handle_post(post):
     path = soup.find('div', {'class': 'breadcrumbs info-detail'}).text.strip().replace('   ', '/')
     content = '\n'.join([item.get_text() for item in soup.find('div', {'class': 'content-detail textview'}).find_all('p')])
     time = soup.find('div', {'class': 'author-info clearfix'}).get_text().strip().partition(', ')[2]
-    print(pid)
-    print(url)
-    print(title)
-    print(path)
-    print(content[:10])
-    print(time)
 
-    # post['pid']: pid
-    # post['title']: title
-    # post['path']: path
-    # post['content']: content
-    # post['time']: time
-    # mycol.insert_one(post)
+    post['pid'] = pid
+    post['title'] = title
+    post['path'] = path
+    post['content'] = content
+    post['time'] = time
+    mycol.insert_one(post)
+    print('write success: ', pid)
 
 
 

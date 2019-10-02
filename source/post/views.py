@@ -37,11 +37,11 @@ post = Blueprint('post', __name__)
 
 # SHOW
 # @login_required
-@post.route('/post/<post_id>/detail')
-def show(post_id):
-    post = Post.find_one({'post_id': post_id})
+@post.route('/post/<pid>/detail')
+def show(pid):
+    post = Post.find_one({'pid': pid})
     # print(post)
-    return render_template('post_content.html', post=post)
+    return render_template('post_detail.html', post=post)
 
 
 # UPDATE
@@ -53,10 +53,10 @@ def show(post_id):
 #     #     abort(403)
 #     form = PostForm()
 #     form.title.data = post_sample['post_title']
-#     form.content.data = post_sample['post_content']
+#     form.content.data = post_sample['content']
 #     form.url.data = post_sample['post_url']
-#     form.path.data = post_sample['post_path']
-#     form.time.data = post_sample['post_time']
+#     form.path.data = post_sample['path']
+#     form.time.data = post_sample['time']
 #     if form.is_submitted():
 #         title = form.title.data
 #         content = form.content.data
@@ -67,10 +67,10 @@ def show(post_id):
 #         myquery = { 'post_id': post_id }
 #         newvalues = { "$set": {
 #             'post_title': title,
-#             'post_content': content,
+#             'content': content,
 #             'post_url': url,
-#             'post_path': path,
-#             'post_time': time
+#             'path': path,
+#             'time': time
 #         }}
 #         Post.update_one(myquery, newvalues)
 #         flash('Your post has been updated !!!')
@@ -116,16 +116,16 @@ def search():
     sort = request.args.get('sort') # date, alphabet
     # query
     if search_by == 'title':
-        query = Post.find({'post_title': {'$regex': keyword, '$options':"$i"} })
+        query = Post.find({'title': {'$regex': keyword, '$options':"$i"} })
     elif search_by == 'topic':
-        query = Post.find({'post_path': {'$regex': keyword, '$options':"$i"} })
+        query = Post.find({'path': {'$regex': keyword, '$options':"$i"} })
     else:
-        query = Post.find({'post_content': {'$regex': keyword} })
+        query = Post.find({'content': {'$regex': keyword} })
     # sort
     if sort == 'date':
-        posts_sorted = query.sort('post_time', pymongo.DESCENDING)
+        posts_sorted = query.sort('time', pymongo.DESCENDING)
     else:
-        posts_sorted = query.sort('post_title',  pymongo.ASCENDING)
+        posts_sorted = query.sort('title',  pymongo.ASCENDING)
     # pagination
     number_result = query.count()
     size = request.args.get('size', 10, type=int)

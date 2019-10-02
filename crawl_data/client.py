@@ -1,6 +1,4 @@
 import time
-import threading
-from queue import Queue
 
 import requests
 from bs4 import BeautifulSoup, element
@@ -20,13 +18,14 @@ def main():
         try:
             for item in sub_topic.ul.find_all('li'):
                 topic = item.a.get('href')
-
+                # send task
+                handle_topic.delay(topic)
+                print('push: ', topic)
         except AttributeError:
             topic = sub_topic.a.get('href')
-
-        # send task
-        handle_topic.delay(topic)
-        print('push: ', topic)
+            # send task
+            handle_topic.delay(topic)
+            print('push: ', topic)
 
 
 if __name__ == '__main__':
