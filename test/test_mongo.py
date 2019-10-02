@@ -3,8 +3,8 @@ from pymongo import ReturnDocument
 from datetime import datetime
 myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 mydb = myclient["zed"]
-# mycol = mydb["post"]
-mycol = mydb["user"]
+mycol = mydb["post"]
+
 
 
 
