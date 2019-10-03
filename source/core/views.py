@@ -1,5 +1,4 @@
 from flask import Blueprint, render_template, request
-# from .. import *
 from source.models import User, Post
 
 core = Blueprint('core', __name__)
@@ -17,11 +16,7 @@ def index():
     number_pages = posts.count() // page_size + 1
     maxp = min(page_num+5, number_pages)
     minp = max(page_num-5, 1)
-    index = [i for i in range(minp, maxp+1)]
+    index = list(range(minp, maxp+1))
     return render_template('index.html', posts=posts, index=index, current_page=page_num)
 
 
-# @core.route('/about')
-# def about():
-#     user_list = User.query.all()
-#     return render_template('about.html', user_list=user_list)

@@ -1,0 +1,14 @@
+# locustfile.py
+from locust import HttpLocust, TaskSet, task 
+
+class UserTaskSet(TaskSet):
+    @task
+    def get_index_task(self): 
+        self.client.get("/", name="GET /")
+
+
+class User(HttpLocust):
+    task_set = UserTaskSet 
+    min_wait = 5000 
+    max_wait = 15000
+    host = "http://localhost:5000"
