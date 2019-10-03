@@ -1,3 +1,4 @@
+import time
 
 import redis
 from celery import Celery
@@ -10,8 +11,29 @@ myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 mydb = myclient["zed"]
 mycol = mydb["post"]
 
-
 app = Celery('post',broker='redis://localhost:6379/0')
+
+
+@app.task
+def get_topic():
+    url = 'https://quantrimang.com'
+    r = requests.get(url)
+    soup = BeautifulSoup(r.text, 'lxml')
+    leftbar = soup.find('div', {'class':'leftbar'})
+    for sub_topic in [tree for tree in leftbar.div.div.ul.contents
+                        if isinstance(tree, element.Tag)
+                        ]:
+        try:
+            for item in sub_topic.ul.find_all('li'):
+                topic = item.a.get('href')
+                # send task
+                handle_topic.delay(topic)
+                print('push: ', topic)
+        except AttributeError:
+            topic = sub_topic.a.get('href')
+            # send task
+            handle_topic.delay(topic)
+            print('push: ', topic)
 
 
 @app.task
