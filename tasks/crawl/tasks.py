@@ -1,13 +1,17 @@
-import time
+import logging
 
-import redis
-from celery import Celery
+import pymongo
 import requests
 from bs4 import BeautifulSoup, element
-import pymongo
+from celery import Celery
 
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.DEBUG,
+                    filemode='w',
+                    filename='crawl.log'
+                    )
 my_client = pymongo.MongoClient("mongodb://localhost:27017/")
-my_db = my_client["zed"]
+my_db = my_client["blog"]
 Post = my_db["post"]
 
 app = Celery('post', broker='redis://localhost:6379/0')
@@ -27,12 +31,12 @@ def get_topic():
                 topic = item.a.get('href')
                 # send task
                 handle_topic.delay(topic)
-                print('push: ', topic)
+                logger.info(f'push: {topic}')
         except AttributeError:
             topic = sub_topic.a.get('href')
             # send task
             handle_topic.delay(topic)
-            print('push: ', topic)
+            logger.info(f'push: {topic}')
 
 
 @app.task
@@ -44,18 +48,19 @@ def handle_topic(topic):
         list_views = soup.find_all('div', {'class': 'listview clearfix'})
         for list_view in list_views:
             post = {}
-            for item in listview.ul.find_all('li'):
+            for item in list_view.ul.find_all('li'):
                 post['url'] = item.a.get('href')
                 post['desc'] = repr(item.div.get_text())
                 # send task
                 handle_post.delay(post)
-                print('push: ', post['url'].partition('-')[-1])
+                pid = post['url'].partition('-')[-1]
+                logger.info(f'push: {pid}')
 
         # next page
         try:
-            viewmore = soup.find('a', {'class': 'viewmore'})
-            topic = viewmore.get('href')
-        except:
+            view_more = soup.find('a', {'class': 'viewmore'})
+            topic = view_more.get('href')
+        except AttributeError:
             break
 
 
@@ -67,17 +72,16 @@ def handle_post(post):
     domain = 'https://quantrimang.com'
     r = requests.get(domain + url)
     soup = BeautifulSoup(r.text, 'lxml')
-    # print(soup.prettify())
     title = soup.find('div', {'id': 'contentMain'}).div.h1.get_text().strip()
     path = soup.find('div', {'class': 'breadcrumbs info-detail'}).text.strip().replace('   ', '/')
     content = '\n'.join(
         [item.get_text() for item in soup.find('div', {'class': 'content-detail textview'}).find_all('p')])
-    time = soup.find('div', {'class': 'author-info clearfix'}).get_text().strip().partition(', ')[2]
+    time_publish = soup.find('div', {'class': 'author-info clearfix'}).get_text().strip().partition(', ')[2]
 
     post['pid'] = pid
     post['title'] = title
     post['path'] = path
     post['content'] = content
-    post['time'] = time
+    post['time'] = time_publish
     Post.insert_one(post)
-    print('write success: ', pid)
+    logger.info(f'write success: {pid}')
