@@ -2,12 +2,30 @@ import pymongo
 from pymongo import ReturnDocument
 from datetime import datetime
 myclient = pymongo.MongoClient("mongodb://localhost:27017/")
-mydb = myclient["zed"]
+mydb = myclient["blog"]
 
-mycol = mydb["post"]
-# mycol = mydb["dmz"]
+User = mydb["user"]
+Post = mydb["post"]
+Dmz = mydb["dmz"]
 
 
+# item = {}
+# pid = '166189'
+# post = Post.find_one({'pid': pid})
+# for k, v in post.items():
+#     if k == '_id':
+#         continue
+#     else:
+#         item[k] = v
+# Dmz.insert_one(item)
+
+
+pid = '166189'
+Dmz.find_one_and_update(
+        {'pid': pid},
+        {'$set': {'content': 'mot con vit xoe ra 2 cai canh'  }},
+        return_document=ReturnDocument.AFTER
+        )
 
 # check update one
 # time_string = '31/05/2019 17:00'
@@ -26,12 +44,12 @@ mycol = mydb["post"]
 # print('ok')
 
 
-a = mycol.find()
-for item in a:
-    time_object = datetime.strptime(item['time'], "%d/%m/%Y %H:%M")
-    print(item['pid'])
-    mycol.find_one_and_update(
-            {'pid': item['pid']},
-            {'$set': {'time': time_object  }},
-            return_document=ReturnDocument.AFTER
-            )
+# a = mycol.find()
+# for item in a:
+#     time_object = datetime.strptime(item['time'], "%d/%m/%Y %H:%M")
+#     print(item['pid'])
+#     mycol.find_one_and_update(
+#             {'pid': item['pid']},
+#             {'$set': {'time': time_object  }},
+#             return_document=ReturnDocument.AFTER
+#             )
