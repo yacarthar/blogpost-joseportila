@@ -1,24 +1,22 @@
 import logging
-
 import pymongo
 import requests
 from bs4 import BeautifulSoup, element
 from celery import Celery
+from celery.signals import worker_ready
 
-logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.DEBUG,
-                    filemode='w',
-                    filename='crawl.log'
-                    )
 my_client = pymongo.MongoClient("mongodb://localhost:27017/")
 my_db = my_client["blog"]
 Post = my_db["post"]
 
-app = Celery('post', broker='redis://localhost:6379/0')
+app = Celery('post')
+app.config_from_object('config.default')
+
+logger = logging.getLogger(__name__)
 
 
-@app.task
-def get_topic():
+@worker_ready.connect
+def get_topic(sender=None, headers=None, body=None, **kwargs):
     url = 'https://quantrimang.com'
     r = requests.get(url)
     soup = BeautifulSoup(r.text, 'lxml')
