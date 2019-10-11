@@ -35,7 +35,7 @@ def show_all_post():
             'pid': item['pid'],
             'url': item['url'],
             'title': item['title'],
-            'desc': item['desc'],
+            # 'desc': item['desc'],
             'path': item['path'],
             'content': item['content'],
             'time': item['time']
@@ -109,7 +109,7 @@ def search_post():
             'pid': item['pid'],
             'url': item['url'],
             'title': item['title'],
-            'desc': item['desc'],
+            # 'desc': item['desc'],
             'path': item['path'],
             'content': item['content'],
             'time': item['time']
