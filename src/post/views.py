@@ -1,20 +1,25 @@
 from flask import (Blueprint, jsonify, url_for,
                    request, redirect
                    )
+from webargs import fields, validate
+from webargs.flaskparser import parser
 import pymongo
 
 from src.models import Post
 
 post = Blueprint('post', __name__)
 
-
 @post.route('/post', methods=['GET'])
 def show_all_post():
     # params
-    page_param = request.args.get('page', 1, type=int)
-    size_param = request.args.get('size', 5, type=int)
-    page = max(page_param, 1)
-    size = max(size_param, 5)
+    page_args = {
+        "page": fields.Int(missing=1, validate=lambda p: p > 0),
+        "size": fields.Int(missing=5, validate=lambda p: p > 0)
+    }
+    args = parser.parse(page_args, request)
+    page = args['page']
+    size = args['size']
+
     # query
     query = {}
     result_total = Post.count_documents(query)
@@ -51,9 +56,9 @@ def show_all_post():
 
     return jsonify({
         'result_total': result_total,
-        'page_total': page_total,
+        'current_page': page,
         'result': result_one_page_list,
-        'pagination[': pagination
+        'pagination': pagination
     })
 
 
@@ -70,15 +75,20 @@ def show_one_post(pid):
 @post.route('/post/search', methods=['GET'])
 def search_post():
     # params
-    page_param = request.args.get('page', 1, type=int)
-    size_param = request.args.get('size', 5, type=int)
-    page = max(page_param, 1)
-    size = max(size_param, 5)
-    keyword = request.args.get('keyword')
-    search_by = request.args.get('search_by', 'title')  # title, topic, content
-    sort = request.args.get('sort', 'time')  # time, title
+    search_args = {
+        "page": fields.Int(missing=1, validate=lambda p: p > 0),
+        "size": fields.Int(missing=5, validate=lambda p: p > 0),
+        'keyword': fields.Str(),
+        'search_by': fields.Str(missing='title'),
+        'sort': fields.Str(missing='time'),
+    }
+    args = parser.parse(search_args, request)
+    page = args['page']
+    keyword = args['keyword']
+    search_by = args['search_by']
+    sort = args['sort']
 
-    # query
+    #query
     query = {}
     if search_by == 'title':
         query['title'] = {'$regex': keyword, '$options': "$i"}
@@ -120,7 +130,7 @@ def search_post():
 
     return jsonify({
         'result_total': result_total,
-        'page_total': page_total,
+        'current_page': page,
         'result': result_one_page_list,
         'pagination': pagination
     })

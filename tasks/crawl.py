@@ -1,17 +1,34 @@
+import os
 import logging
+import logging.config
+
 import pymongo
+from pymongo import InsertOne
 import requests
 from bs4 import BeautifulSoup, element
 from celery import Celery
 from celery.signals import worker_ready
 
+from celery_config import LOGGING_CONFIG
+
+# db
 my_client = pymongo.MongoClient("mongodb://localhost:27017/")
 my_db = my_client["blog"]
 Post = my_db["post"]
 
-app = Celery('post')
-app.config_from_object('config.default')
+# app celery
+app = Celery(__name__)
 
+config_dict = {
+    "development": "celery_config.DevelopmentConfig",
+    "production": "celery_config.ProductionConfig",
+    "default": "celery_config.DefaultConfig"
+}
+config_name = os.getenv('CELERY_CONFIGURATION', 'default')
+app.config_from_object(config_dict.get(config_name, 'default'))
+
+# logging
+logging.config.dictConfig(app.LOGGING_CONFIG)
 logger = logging.getLogger(__name__)
 
 
@@ -27,42 +44,18 @@ def get_topic(sender=None, headers=None, body=None, **kwargs):
         try:
             for item in sub_topic.ul.find_all('li'):
                 topic = item.a.get('href')
+
                 # send task
                 handle_topic.delay(topic)
                 logger.info(f'push: {topic}')
         except AttributeError:
             topic = sub_topic.a.get('href')
+            
             # send task
             handle_topic.delay(topic)
             logger.info(f'push: {topic}')
 
 
-@app.task
-def handle_topic(topic):
-    domain = 'https://quantrimang.com'
-    while True:
-        r = requests.get(domain + topic)
-        soup = BeautifulSoup(r.text, 'lxml')
-        list_views = soup.find_all('div', {'class': 'listview clearfix'})
-        for list_view in list_views:
-            post = {}
-            for item in list_view.ul.find_all('li'):
-                post['url'] = item.a.get('href')
-                post['desc'] = repr(item.div.get_text())
-                # send task
-                handle_post.delay(post)
-                pid = post['url'].partition('-')[-1]
-                logger.info(f'push: {pid}')
-
-        # next page
-        try:
-            view_more = soup.find('a', {'class': 'viewmore'})
-            topic = view_more.get('href')
-        except AttributeError:
-            break
-
-
-@app.task
 def handle_post(post):
     url = post['url']
     pid = url[url.rfind('-') + 1:]
@@ -81,5 +74,37 @@ def handle_post(post):
     post['path'] = path
     post['content'] = content
     post['time'] = time_publish
-    Post.insert_one(post)
-    logger.info(f'write success: {pid}')
+    return post
+
+
+@app.task
+def handle_topic(topic):
+    domain = 'https://quantrimang.com'
+    request_array = []
+    while True:
+        r = requests.get(domain + topic)
+        soup = BeautifulSoup(r.text, 'lxml')
+        list_views = soup.find_all('div', {'class': 'listview clearfix'})
+        for list_view in list_views:
+            post = {}
+            for item in list_view.ul.find_all('li'):
+                post['url'] = item.a.get('href')
+                post['desc'] = repr(item.div.get_text())
+                detail_post = handle_post(post)
+                logger.info("handle: {}".format(detail_post['pid']))
+                request_array.append(InsertOne(detail_post))
+                
+
+        # next page
+        view_more = soup.find('a', {'class': 'viewmore'})
+        if view_more is not None:
+            topic = view_more.get('href')
+            # check to write db every page
+            if len(request_array) >= 1000:
+                # Post.bulk_write(request_array)
+                request_array = []
+                logger.info("write success")
+        else :
+            break
+
+    # Post.bulk_write(request_array)
