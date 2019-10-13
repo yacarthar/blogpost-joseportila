@@ -1,4 +1,4 @@
-DEFAULT_LOGGING_CONFIG = { 
+LOGGING_CONFIG = { 
     'version': 1,
     'disable_existing_loggers': True,
     'formatters': { 
@@ -26,6 +26,8 @@ DEFAULT_LOGGING_CONFIG = {
         'crawl': { 
             'handlers': ['default'],
             'level': 'INFO',
+            'filemode': 'w',
+            'filename': 'crawl.log',
             'propagate': False
         },
         '__main__': {  # if __name__ == '__main__'
@@ -37,11 +39,10 @@ DEFAULT_LOGGING_CONFIG = {
 }
 
 class DefaultConfig:
-    CELERY_RESULT_BACKEND = 'database'
-    CELERY_RESULT_DBURI = 'sqlite:///temp.db'
-    CELERY_BROKER_URL = 'redis://localhost:6379/0'
-
-    LOGGING_CONFIG = DEFAULT_LOGGING_CONFIG.update({})
+    RESULT_BACKEND = 'database'
+    RESULT_DBURI = 'sqlite:///temp.db'
+    BROKER_URL = 'redis://localhost:6379/0'
+    LOGGING_CONFIG.update({})
 
 
 class DevelopmentConfig(DefaultConfig):

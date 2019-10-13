@@ -17,7 +17,7 @@ my_db = my_client["blog"]
 Post = my_db["post"]
 
 # app celery
-app = Celery(__name__)
+app = Celery('crawl')
 
 config_dict = {
     "development": "celery_config.DevelopmentConfig",
@@ -28,12 +28,13 @@ config_name = os.getenv('CELERY_CONFIGURATION', 'default')
 app.config_from_object(config_dict.get(config_name, 'default'))
 
 # logging
-logging.config.dictConfig(app.LOGGING_CONFIG)
+logging.config.dictConfig(LOGGING_CONFIG)
 logger = logging.getLogger(__name__)
 
 
-@worker_ready.connect
-def get_topic(sender=None, headers=None, body=None, **kwargs):
+@worker_ready.connect()
+def get_topic(**kwargs):
+    print('ok')
     url = 'https://quantrimang.com'
     r = requests.get(url)
     soup = BeautifulSoup(r.text, 'lxml')
@@ -50,7 +51,7 @@ def get_topic(sender=None, headers=None, body=None, **kwargs):
                 logger.info(f'push: {topic}')
         except AttributeError:
             topic = sub_topic.a.get('href')
-            
+
             # send task
             handle_topic.delay(topic)
             logger.info(f'push: {topic}')
@@ -63,7 +64,11 @@ def handle_post(post):
     domain = 'https://quantrimang.com'
     r = requests.get(domain + url)
     soup = BeautifulSoup(r.text, 'lxml')
-    title = soup.find('div', {'id': 'contentMain'}).div.h1.get_text().strip()
+    if soup.find('div', {'id': 'contentMain'}) is not None:
+        title = soup.find('div', {'id': 'contentMain'}).div.h1.get_text().strip()
+    else:
+        print("NO title --- ", url)
+        title = 'No title'
     path = soup.find('div', {'class': 'breadcrumbs info-detail'}).text.strip().replace('   ', '/')
     content = '\n'.join(
         [item.get_text() for item in soup.find('div', {'class': 'content-detail textview'}).find_all('p')])
@@ -93,7 +98,6 @@ def handle_topic(topic):
                 detail_post = handle_post(post)
                 logger.info("handle: {}".format(detail_post['pid']))
                 request_array.append(InsertOne(detail_post))
-                
 
         # next page
         view_more = soup.find('a', {'class': 'viewmore'})
@@ -104,7 +108,7 @@ def handle_topic(topic):
                 # Post.bulk_write(request_array)
                 request_array = []
                 logger.info("write success")
-        else :
+        else:
             break
 
     # Post.bulk_write(request_array)

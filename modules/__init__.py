@@ -1,9 +1,8 @@
 import os
 
-from flask import Flask
+from flask import Flask, jsonify
 
 from src.post.views import post
-from src.error_handler.views import error_handler
 
 app = Flask(__name__)
 
@@ -18,4 +17,8 @@ app.config.from_object(config_dict.get(config_name, 'default'))
 
 
 app.register_blueprint(post)
-app.register_blueprint(error_handler)
+
+
+@app.errorhandler(404)
+def not_found_error(error):
+    return jsonify({'message': 'page not found'}), 404
