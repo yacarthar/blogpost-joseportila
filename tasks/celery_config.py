@@ -1,4 +1,5 @@
-LOGGING_CONFIG = { 
+MONGO_URI = "mongodb://localhost:27017/"
+LOGGING_CONFIG = {
     'version': 1,
     'disable_existing_loggers': True,
     'formatters': { 
@@ -42,6 +43,7 @@ class DefaultConfig:
     RESULT_BACKEND = 'database'
     RESULT_DBURI = 'sqlite:///temp.db'
     BROKER_URL = 'redis://localhost:6379/0'
+    MONGO_URI = "mongodb://localhost:27017/"
     LOGGING_CONFIG.update({})
 
 

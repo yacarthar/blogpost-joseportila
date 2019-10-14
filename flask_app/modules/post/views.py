@@ -1,15 +1,21 @@
 from flask import (Blueprint, jsonify, url_for,
                    request, redirect
                    )
-from webargs import fields, validate
+from webargs import fields
+from walrus import Database
+
 from webargs.flaskparser import parser
 import pymongo
 
 from models import Post
 
 post = Blueprint('post', __name__)
+db_cache = Database(host='localhost', port=6379, db=0)
+cache = db_cache.cache()
+
 
 @post.route('/post', methods=['GET'])
+@cache.cached(timeout=10)
 def show_all_post():
     # params
     page_args = {

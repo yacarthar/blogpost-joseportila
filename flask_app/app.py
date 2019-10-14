@@ -52,9 +52,10 @@ def configure_error_handlers(app):
     :param app: flask app
     :return: not return
     """
-    @app.errorhandler(404)
-    def not_found_error(e):
-        return jsonify({'message': 'page not found'}), 404
+    # @app.errorhandler(404)
+    # def not_found_error(e):
+    #     return jsonify({'message': 'page not found'}), 404
+    pass
 
 
 configured_app = configure_app(app)

@@ -9,10 +9,10 @@ from bs4 import BeautifulSoup, element
 from celery import Celery
 from celery.signals import worker_ready
 
-from celery_config import LOGGING_CONFIG
+from celery_config import LOGGING_CONFIG, MONGO_URI
 
 # db
-my_client = pymongo.MongoClient("mongodb://localhost:27017/")
+my_client = pymongo.MongoClient(MONGO_URI)
 my_db = my_client["blog"]
 Post = my_db["post"]
 
@@ -34,7 +34,6 @@ logger = logging.getLogger(__name__)
 
 @worker_ready.connect()
 def get_topic(**kwargs):
-    print('ok')
     url = 'https://quantrimang.com'
     r = requests.get(url)
     soup = BeautifulSoup(r.text, 'lxml')
@@ -67,7 +66,6 @@ def handle_post(post):
     if soup.find('div', {'id': 'contentMain'}) is not None:
         title = soup.find('div', {'id': 'contentMain'}).div.h1.get_text().strip()
     else:
-        print("NO title --- ", url)
         title = 'No title'
     path = soup.find('div', {'class': 'breadcrumbs info-detail'}).text.strip().replace('   ', '/')
     content = '\n'.join(
