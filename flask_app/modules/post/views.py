@@ -5,7 +5,7 @@ from webargs import fields, validate
 from webargs.flaskparser import parser
 import pymongo
 
-from src.models import Post
+from models import Post
 
 post = Blueprint('post', __name__)
 
