@@ -6,10 +6,10 @@ class UserTaskSet(TaskSet):
     def get_index_task(self): 
         self.client.get("/post")
 
-    @task
-    def post_index_task(self):        # New task here
-        payload = {'test': 'cheri'}
-        self.client.post("/post", data=payload)
+    # @task
+    # def post_index_task(self):        # New task here
+    #     payload = {'test': 'cheri'}
+    #     self.client.post("/post", data=payload)
 
 class User(HttpLocust):
     task_set = UserTaskSet 

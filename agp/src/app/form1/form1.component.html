@@ -1,0 +1,12 @@
+<p>form1 works!</p>
+<input placeholder="enter username" [(ngModel)]="name" #meo>
+<h3>Your name is: {{ name }}</h3>
+
+<h3>Your name is: {{ meo.value | json }}</h3>
+
+<h3 [style.color]="name.length % 2 === 0 ? 'red': 'black'">
+    Your name is: {{ name }}</h3>
+
+<h3 [ngStyle]="name.length % 2 === 0 ? evenStyle: oddStyle">
+    Your name is: {{ name }}</h3>
+<div [ngClass]="currentClass">a</div>

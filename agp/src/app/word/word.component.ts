@@ -12,11 +12,11 @@ export class WordComponent {
     urls = 'https://image.shutterstock.com/image-photo/beautiful-water-drop-on-dandelion-600w-789676552.jpg'
     forgot = false;
     toggleForgot() {
-    	this.forgot = !this.forgot
+        this.forgot = !this.forgot
     };
     showEvent(event) {
-    	console.log('UP')
-    	this.name = event.target.value
+        console.log(event.target.value);
+        this.name = event.target.value
     }
 
 }

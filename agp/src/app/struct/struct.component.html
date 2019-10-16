@@ -1,0 +1,9 @@
+<p *ngIf="isShow">struct works!</p>
+<button (click)="isShow = !isShow">Toggle</button>
+<p><input [(ngModel)]="newWord" placeholder="word"></p>
+<p><input [(ngModel)]="definition" placeholder="definition"></p>
+<button (click)=addWord()>Submit</button>
+<div *ngFor="let word of arrWords">
+        <span [ngStyle]= "{color: word.memorized? 'red': 'blue'}">
+            {{ word.en}} ---  {{ word.vn }}</span>
+</div>
