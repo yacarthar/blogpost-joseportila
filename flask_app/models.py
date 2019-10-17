@@ -1,6 +1,5 @@
 import pymongo
+from config import MONGO_URI, MONGO_DATABASE, MONGO_COLLECTION
 
-myclient = pymongo.MongoClient("mongodb://localhost:27017/")
-db = myclient["blog"]
-
-Post = db["post"]
+myclient = pymongo.MongoClient(MONGO_URI)
+Post = myclient[MONGO_DATABASE][MONGO_COLLECTION]
