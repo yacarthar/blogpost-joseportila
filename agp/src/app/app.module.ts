@@ -8,6 +8,10 @@ import { WordComponent } from './word/word.component';
 import { BookComponent } from './book/book.component';
 import { Form1Component } from './form1/form1.component';
 import { StructComponent } from './struct/struct.component';
+import { PersonComponent } from './person/person.component';
+import { ListPersonComponent } from './list-person/list-person.component';
+import { ParentComponent} from './parent.component';
+import { ChildComponent} from './child.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +19,11 @@ import { StructComponent } from './struct/struct.component';
     WordComponent,
     BookComponent,
     Form1Component,
-    StructComponent
+    StructComponent,
+    PersonComponent,
+    ListPersonComponent,
+    ParentComponent,
+    ChildComponent
   ],
   imports: [
     BrowserModule,

@@ -1,9 +1,26 @@
-<p *ngIf="isShow">struct works!</p>
+<p>struct works!</p>
+<div [hidden]="isShow">
+    <form >
+        <p><input [(ngModel)]="newWord" placeholder="word" name="a"></p>
+        <p><input [(ngModel)]="definition" placeholder="definition" name="b"></p>
+        <button (click)=addWord()>Submit</button>
+    </form>
+</div>
 <button (click)="isShow = !isShow">Toggle</button>
-<p><input [(ngModel)]="newWord" placeholder="word"></p>
-<p><input [(ngModel)]="definition" placeholder="definition"></p>
-<button (click)=addWord()>Submit</button>
+<div>
+    <select [(ngModel)]="filterStatus">
+        <option value="all">all</option>
+        <option value="memorized">memorized</option>
+        <option value="not memorized">not memorized</option>
+    </select>
+</div>
 <div *ngFor="let word of arrWords">
+    <div *ngIf="getShowStatus(word.memorized)">
         <span [ngStyle]= "{color: word.memorized? 'red': 'blue'}">
-            {{ word.en}} ---  {{ word.vn }}</span>
+            {{ word.en}} ---  {{ word.vn }}
+            <button (click)="deleteWord(word.id)">Delete</button>
+            <button (click)="word.memorized = !word.memorized">
+                {{ word.memorized? 'not memorized': 'memorized'}}</button>
+        </span>
+    </div>
 </div>

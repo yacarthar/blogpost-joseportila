@@ -8,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class StructComponent implements OnInit {
 
   constructor() { }
+  filterStatus = 'all';
   isShow = true;
   newWord = '';
   definition = '';
@@ -28,7 +29,15 @@ export class StructComponent implements OnInit {
     });
     this.newWord = '';
     this.definition = '';
-
+  }
+  deleteWord(id) {
+    this.arrWords.splice(id - 1, 1);
+  }
+  getShowStatus(memorized: boolean) {
+    const cond1 = this.filterStatus === 'all';
+    const cond2 = this.filterStatus === 'memorized' && memorized;
+    const cond3 = this.filterStatus === 'not memorized' && !memorized;
+    return cond1 || cond2 || cond3;
   }
   ngOnInit() {
   }
