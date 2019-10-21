@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LearnPipeComponent } from './learn-pipe.component';
+import { CchttpComponent } from './cchttp.component';
 
-describe('LearnPipeComponent', () => {
-  let component: LearnPipeComponent;
-  let fixture: ComponentFixture<LearnPipeComponent>;
+describe('CchttpComponent', () => {
+  let component: CchttpComponent;
+  let fixture: ComponentFixture<CchttpComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LearnPipeComponent ]
+      declarations: [ CchttpComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LearnPipeComponent);
+    fixture = TestBed.createComponent(CchttpComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

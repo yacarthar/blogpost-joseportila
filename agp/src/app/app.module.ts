@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { HttpModule } from '@angular/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -10,10 +11,9 @@ import { Form1Component } from './form1/form1.component';
 import { StructComponent } from './struct/struct.component';
 import { PersonComponent } from './person/person.component';
 import { ListPersonComponent } from './list-person/list-person.component';
-import { ParentComponent} from './parent.component';
-import { ChildComponent} from './child.component';
 import { CardComponent} from './card.component';
-import { LearnPipeComponent } from './learn-pipe/learn-pipe.component';
+import { IpComponent } from './ip/ip.component';
+import { CchttpComponent } from './cchttp/cchttp.component';
 
 @NgModule({
   declarations: [
@@ -24,15 +24,15 @@ import { LearnPipeComponent } from './learn-pipe/learn-pipe.component';
     StructComponent,
     PersonComponent,
     ListPersonComponent,
-    ParentComponent,
-    ChildComponent,
     CardComponent,
-    LearnPipeComponent
+    IpComponent,
+    CchttpComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    HttpModule
   ],
   providers: [],
   bootstrap: [AppComponent]
