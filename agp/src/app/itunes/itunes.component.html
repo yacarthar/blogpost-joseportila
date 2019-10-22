@@ -1,4 +1,3 @@
-<script src="cchttp.service.ts"></script>
 <form class="form-inline">
   <div class="form-group">
     <input type="search"
@@ -12,12 +11,16 @@
   </button>
 </form>
 
+
 <ul class="list-group">
   <li class="list-group-item"
       *ngFor="let track of itunes.results">
-    <img src="{{track.artworkUrl30}}">
-    <a target="_blank"
-       href="{{track.trackViewUrl}}">{{ track.trackName }}
+    <img src="{{track.thumbnail}}" alt="xxx">
+    <a href="{{track.link}}">{{ track.track }}
     </a>
   </li>
 </ul>
+
+<div class="text-center">
+  <p class="lead" *ngIf="loading">Loading...</p>
+</div>

@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { WordComponent } from './word/word.component';
 import { BookComponent } from './book/book.component';
@@ -13,7 +12,12 @@ import { PersonComponent } from './person/person.component';
 import { ListPersonComponent } from './list-person/list-person.component';
 import { CardComponent} from './card.component';
 import { IpComponent } from './ip/ip.component';
-import { CchttpComponent } from './cchttp/cchttp.component';
+import { ItunesComponent } from './itunes/itunes.component';
+import { BlogComponent } from './blog/blog.component';
+import { Itunes2Component } from './itunes2/itunes2.component';
+import { HttpClientModule } from "@angular/common/http";
+import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
+import { ReactiveFormsModule } from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -26,15 +30,18 @@ import { CchttpComponent } from './cchttp/cchttp.component';
     ListPersonComponent,
     CardComponent,
     IpComponent,
-    CchttpComponent,
+    ItunesComponent,
+    BlogComponent,
+    Itunes2Component,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     FormsModule,
-    HttpModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
+platformBrowserDynamic().bootstrapModule(AppModule)

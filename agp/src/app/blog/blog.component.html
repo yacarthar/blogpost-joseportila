@@ -1,0 +1,12 @@
+<div>
+  <button (click)="onSearch()"></button>
+</div>
+
+<ul class="list-group">
+  <li class="list-group-item"
+      *ngFor="let article of blogs | async">
+    <p>{{article.title}}</p>
+    <p>{{article.url}}</p>
+    <p>{{article.pid}}</p>
+  </li>
+</ul>
