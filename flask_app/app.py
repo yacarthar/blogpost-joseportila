@@ -1,10 +1,12 @@
 import os
 
 from flask import Flask, jsonify
+from flask_cors import CORS
 
 from modules.post.views import post
 
 app = Flask(__name__)
+CORS(app)
 
 def configure_app(app):
     """

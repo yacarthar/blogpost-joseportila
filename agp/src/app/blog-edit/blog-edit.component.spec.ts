@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { IpComponent } from './ip.component';
+import { BlogEditComponent } from './blog-edit.component';
 
-describe('IpComponent', () => {
-  let component: IpComponent;
-  let fixture: ComponentFixture<IpComponent>;
+describe('BlogEditComponent', () => {
+  let component: BlogEditComponent;
+  let fixture: ComponentFixture<BlogEditComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ IpComponent ]
+      declarations: [ BlogEditComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(IpComponent);
+    fixture = TestBed.createComponent(BlogEditComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

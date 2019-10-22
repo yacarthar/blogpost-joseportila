@@ -1,0 +1,53 @@
+<div class="card">
+  <div class="card-body">
+    <form [formGroup]="angForm" novalidate>
+
+      <div class="form-group">
+        <label class="col-md-4">Article Title</label>
+        <input type="text" class="form-control" 
+          formControlTitle="ArticleTitle" 
+          #ArticleTitle />
+      </div>
+
+      <div *ngIf="angForm.controls['ArticleTitle'].invalid && (angForm.controls['ArticleTitle'].dirty || angForm.controls['ArticleTitle'].touched)" class="alert alert-danger">
+        <div *ngIf="angForm.controls['ArticleTitle'].errors.required">
+          Article Title is required.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-md-4">Article Path </label>
+        <textarea class="form-control" rows = 7 cols = "5"
+        formControlTitle="ArticlePath" 
+        #ArticlePath></textarea>
+      </div>
+
+      <div *ngIf="angForm.controls['ArticlePath'].invalid && (angForm.controls['ArticlePath'].dirty || angForm.controls['ArticlePath'].touched)" class="alert alert-danger">
+        <div *ngIf="angForm.controls['ArticlePath'].errors.required">
+          Article Path is required.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-md-4">Article Pid</label>
+        <input type="text" class="form-control" 
+          formControlTitle="ArticlePid" 
+          #ArticlePid
+        />
+      </div>
+
+      <div *ngIf="angForm.controls['ArticlePid'].invalid && (angForm.controls['ArticlePid'].dirty || angForm.controls['ArticlePid'].touched)" class="alert alert-danger">
+        <div *ngIf="angForm.controls['ArticlePid'].errors.required">
+          Article Pid is required.
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <button (click) = "addArticle(ArticleTitle.value, ArticlePath.value, ArticlePid.value)" type="submit" class="btn btn-primary"
+        [disabled]="angForm.pristine || angForm.invalid" >
+          Create Article
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
