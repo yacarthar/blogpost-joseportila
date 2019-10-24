@@ -5,6 +5,7 @@ import { BlogAddComponent } from './blog-add/blog-add.component';
 import { BlogEditComponent } from './blog-edit/blog-edit.component';
 import { BlogGetComponent } from './blog-get/blog-get.component';
 import { BlogGetoneComponent } from './blog-getone/blog-getone.component';
+import { BlogSearchComponent } from './blog-search/blog-search.component'
 
 const routes: Routes = [
   {
@@ -22,6 +23,10 @@ const routes: Routes = [
   {
     path: 'post',
     component: BlogGetComponent
+  },
+  {
+    path: 'search',
+    component: BlogSearchComponent
   }
 ];
 

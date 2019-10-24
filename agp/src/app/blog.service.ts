@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {map} from 'rxjs/operators';
+// import {HttpParams} from "@angular/common/http";
 
 import Article from './article';
 
@@ -34,12 +35,40 @@ export class BlogService {
     return this.http.get(`${this.uri}/${id}`)
   }
 
+  searchArticles(keyword, search_by, sort) {
+    let params: any = {};
+    if (keyword != undefined) {
+      params['keyword'] = keyword;
+    }
+    if (sort != undefined) {
+      params['sort'] = sort;
+    }
+    if (search_by != undefined) {
+      params['search_by'] = search_by;
+    }
+
+    return this.http.get(`${this.uri}/search`, {params: params}).pipe(
+      map((res: any) => {
+        return res.result.map(item => {
+          return new Article(
+            item.title,
+            item.url,
+            item.path,
+            item.pid,
+            item.time,
+            item.content
+          )
+        })
+      })
+    )
+  }
+
   addArticle(ArticleTitle, ArticlePath, ArticlePid) {
     console.log(ArticleTitle, ArticlePath, ArticlePid);
     const obj = {
-      ArticleTitle,
-      ArticlePath,
-      ArticlePid
+      'title': ArticleTitle,
+      'path': ArticlePath,
+      'pid':ArticlePid
     };
     this.http.post(`${this.uri}`, obj)
         .subscribe(res => console.log('Done'));

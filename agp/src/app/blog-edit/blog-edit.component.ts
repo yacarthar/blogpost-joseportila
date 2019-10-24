@@ -23,9 +23,9 @@ export class BlogEditComponent implements OnInit {
 
   createForm() {
     this.angForm = this.fb.group({
-      ArticleTitle: ['', Validators.required ],
-      ArticlePath: ['', Validators.required ],
-      ArticlePid: ['', Validators.required ]
+      articleTitle: ['', Validators.required ],
+      articlePath: ['', Validators.required ],
+      articlePid: ['', Validators.required ]
     });
   }
 

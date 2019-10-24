@@ -20,7 +20,7 @@
             "tsConfig": "tsconfig.app.json",
             "aot": false,
             "assets": [
-              "src/favicon.ic một thời điểm tại Fan Page Chim Sẻ Đi Nắng ngày 14 tháng 10 năm 2019 khi game thủ này đang tham gia giải đấu AOE Thẩm Quyến Openo",
+              "src/favicon.icon",
               "src/assets"
             ],
             "styles": [

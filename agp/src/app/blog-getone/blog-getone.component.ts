@@ -13,13 +13,20 @@ export class BlogGetoneComponent implements OnInit {
   constructor(private bs: BlogService,
                private route: ActivatedRoute) { }
   url = this.route['_routerState'].snapshot.url;
-  id = this.url.split("/")[-1];
+  id = this.url.slice(this.url.lastIndexOf('/')+1);
 
   ngOnInit() {
     this.bs
-      .getOneArticle()
-      .subscribe((data: Article) => {
-        this.article = data;
+      .getOneArticle(this.id)
+      .subscribe((item: any) => {
+        this.article = new Article(
+          item.title,
+          item.url,
+          item.path,
+          item.pid,
+          item.time,
+          item.content
+        )
       });
   }
 

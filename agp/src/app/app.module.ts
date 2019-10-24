@@ -13,7 +13,8 @@ import { HttpClientModule } from "@angular/common/http";
 import { ReactiveFormsModule } from "@angular/forms";
 import { SlimLoadingBarModule } from 'ng2-slim-loading-bar';
 import { BlogGetoneComponent } from './blog-getone/blog-getone.component';
-
+import { FormsModule } from '@angular/forms';
+import { BlogSearchComponent } from './blog-search/blog-search.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -21,13 +22,15 @@ import { BlogGetoneComponent } from './blog-getone/blog-getone.component';
     BlogAddComponent,
     BlogEditComponent,
     BlogGetoneComponent,
+    BlogSearchComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     SlimLoadingBarModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [BlogService],
   bootstrap: [AppComponent]

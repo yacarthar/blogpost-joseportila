@@ -90,6 +90,7 @@ def search_post():
     }
     args = parser.parse(search_args, request)
     page = args['page']
+    size = args['size']
     keyword = args['keyword']
     search_by = args['search_by']
     sort = args['sort']
