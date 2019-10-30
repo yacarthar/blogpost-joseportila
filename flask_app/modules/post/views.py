@@ -1,3 +1,5 @@
+import time
+
 from flask import (Blueprint, jsonify, url_for,
                    request, redirect
                    )
@@ -15,7 +17,7 @@ cache = db_cache.cache()
 
 
 @post.route('/post', methods=['GET'])
-@cache.cached(timeout=10)
+#@cache.cached(timeout=10)
 def show_all_post():
     # params
     page_args = {
@@ -31,6 +33,7 @@ def show_all_post():
     result_total = Post.count_documents(query)
 
     # get result to display
+    # time.sleep(5)
     page_total = result_total // size + 1
     page = min(page_total, page)
     skips = size * (page - 1)
@@ -177,7 +180,8 @@ def update_post(pid):
         {'pid': pid},
         {'$set': data},
     )
-    return redirect(url_for('post.show_one_post', pid=pid))
+    # return redirect(url_for('post.show_one_post', pid=pid))
+    return jsonify({'message': 'ok'})
 
 
 @post.route('/post/<pid>', methods=['DELETE'])
