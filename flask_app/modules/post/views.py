@@ -155,9 +155,12 @@ def create_post():
     pid = data.get('pid', None)
     # validate
     if pid is None:
-        return jsonify({'message': 'pid (post id) missing'})
-    if Post.find_one({'pid': pid}):
+        # return jsonify({'message': 'pid (post id) missing'}), 400
+        data['from_user_create'] = True
+        print(data)
+    if pid is not None and Post.find_one({'pid': pid}):
         return jsonify({'message': 'post exist'})
+
     # insert
     Post.insert_one(data)
     return jsonify({
