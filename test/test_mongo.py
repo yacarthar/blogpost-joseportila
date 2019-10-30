@@ -4,9 +4,9 @@ from datetime import datetime
 myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 mydb = myclient["blog"]
 
-User = mydb["user"]
+# User = mydb["user"]
 Post = mydb["post"]
-Dmz = mydb["dmz"]
+# Dmz = mydb["dmz"]
 
 
 # item = {}
@@ -20,12 +20,12 @@ Dmz = mydb["dmz"]
 # Dmz.insert_one(item)
 
 
-pid = '166189'
-Dmz.find_one_and_update(
-        {'pid': pid},
-        {'$set': {'content': 'mot con vit xoe ra 2 cai canh'  }},
-        return_document=ReturnDocument.AFTER
-        )
+# pid = '166189'
+# Dmz.find_one_and_update(
+#         {'pid': pid},
+#         {'$set': {'content': 'mot con vit xoe ra 2 cai canh'  }},
+#         return_document=ReturnDocument.AFTER
+#         )
 
 # check update one
 # time_string = '31/05/2019 17:00'
@@ -44,12 +44,23 @@ Dmz.find_one_and_update(
 # print('ok')
 
 
-# a = mycol.find()
+# a = Post.find({})
 # for item in a:
 #     time_object = datetime.strptime(item['time'], "%d/%m/%Y %H:%M")
 #     print(item['pid'])
-#     mycol.find_one_and_update(
+#     Post.find_one_and_update(
 #             {'pid': item['pid']},
 #             {'$set': {'time': time_object  }},
 #             return_document=ReturnDocument.AFTER
 #             )
+
+
+a = Post.find({})
+for item in a:
+    new_pid = int(item['pid'])
+    print(new_pid)
+    Post.find_one_and_update(
+            {'pid': item['pid']},
+            {'$set': {'pid': new_pid  }},
+            return_document=ReturnDocument.AFTER
+            )

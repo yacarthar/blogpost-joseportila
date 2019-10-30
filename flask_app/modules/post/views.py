@@ -41,13 +41,13 @@ def show_all_post():
     result_one_page_list = []
     for item in result_one_page:
         result_one_page_list.append({
-            'pid': item['pid'],
-            'url': item['url'],
-            'title': item['title'],
-            # 'desc': item['desc'],
-            'path': item['path'],
-            'content': item['content'],
-            'time': item['time']
+            'pid': item.get('pid'),
+            'url': item.get('url'),
+            'title': item.get('title'),
+            # 'desc': item.get('desc'),
+            'path': item.get('path'),
+            'content': item.get('content'),
+            'time': item.get('tim')
         })
 
     # pagination
@@ -71,7 +71,7 @@ def show_all_post():
     })
 
 
-@post.route('/post/<pid>', methods=['GET'])
+@post.route('/post/<int:pid>', methods=['GET'])
 def show_one_post(pid):
     # validate
     if not Post.find_one({'pid': pid}):
@@ -146,6 +146,15 @@ def search_post():
     })
 
 
+import random
+def generate_pid():
+    while True:
+        rand_num = random.randint(190000, 195000)
+        if not Post.find_one({'pid': rand_num}):
+            break
+    return rand_num
+
+
 @post.route('/post', methods=['POST'])
 def create_post():
     # get data body
@@ -153,23 +162,22 @@ def create_post():
     if not data:
         return jsonify({'message': 'json data missing'})
     pid = data.get('pid', None)
+
     # validate
-    if pid is None:
-        # return jsonify({'message': 'pid (post id) missing'}), 400
-        data['from_user_create'] = True
-        print(data)
     if pid is not None and Post.find_one({'pid': pid}):
         return jsonify({'message': 'post exist'})
+    if pid is None:
+        data['pid'] = generate_pid()
 
     # insert
     Post.insert_one(data)
     return jsonify({
         'message': 'create success',
-        'pid': pid
+        'pid': data['pid']
     })
 
 
-@post.route('/post/<pid>', methods=['PUT'])
+@post.route('/post/<int:pid>', methods=['PUT'])
 def update_post(pid):
     # validate
     if not Post.find_one({'pid': pid}):
@@ -187,7 +195,7 @@ def update_post(pid):
     return jsonify({'message': 'ok'})
 
 
-@post.route('/post/<pid>', methods=['DELETE'])
+@post.route('/post/<int:pid>', methods=['DELETE'])
 def delete_post(pid):
     # validate
     if not Post.find_one({'pid': pid}):
