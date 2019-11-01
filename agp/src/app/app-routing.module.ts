@@ -1,32 +1,16 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-
-import { BlogAddComponent } from './blog-add/blog-add.component';
-import { BlogEditComponent } from './blog-edit/blog-edit.component';
-import { BlogGetComponent } from './blog-get/blog-get.component';
-import { BlogGetoneComponent } from './blog-getone/blog-getone.component';
-import { BlogSearchComponent } from './blog-search/blog-search.component'
+import { BlogDetailComponent } from './blog-detail/blog-detail.component';
+import { BlogListComponent } from './blog-list/blog-list.component';
 
 const routes: Routes = [
   {
-    path: 'create',
-    component: BlogAddComponent
+    path: 'detail/:id',
+    component: BlogDetailComponent
   },
   {
-    path: 'edit/:id',
-    component: BlogEditComponent
-  },
-  {
-    path: 'post/:id',
-    component: BlogGetoneComponent
-  },
-  {
-    path: 'post',
-    component: BlogGetComponent
-  },
-  {
-    path: 'search',
-    component: BlogSearchComponent
+    path: '**',
+    component: BlogListComponent
   }
 ];
 

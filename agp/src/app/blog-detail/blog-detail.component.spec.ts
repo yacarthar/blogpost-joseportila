@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BlogGetoneComponent } from './blog-getone.component';
+import { BlogDetailComponent } from './blog-detail.component';
 
-describe('BlogGetoneComponent', () => {
-  let component: BlogGetoneComponent;
-  let fixture: ComponentFixture<BlogGetoneComponent>;
+describe('BlogDetailComponent', () => {
+  let component: BlogDetailComponent;
+  let fixture: ComponentFixture<BlogDetailComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BlogGetoneComponent ]
+      declarations: [ BlogDetailComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BlogGetoneComponent);
+    fixture = TestBed.createComponent(BlogDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

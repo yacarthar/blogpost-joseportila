@@ -16,18 +16,8 @@ db_cache = Database(host='localhost', port=6379, db=0)
 cache = db_cache.cache()
 
 
-@post.route('/post', methods=['GET'])
-#@cache.cached(timeout=10)
-def show_all_post():
-    # params
-    page_args = {
-        "page": fields.Int(missing=1, validate=lambda p: p > 0),
-        "size": fields.Int(missing=5, validate=lambda p: p > 0)
-    }
-    args = parser.parse(page_args, request)
-    page = args['page']
-    size = args['size']
-
+@cache.cached(timeout=60)
+def search_all_post(page, size):
     # query
     query = {}
     result_total = Post.count_documents(query)
@@ -62,13 +52,28 @@ def show_all_post():
         pagination['next_page'] = url.format(page + 1)
     if 1 < page:
         pagination['previous_page'] = url.format(page - 1)
-
-    return jsonify({
+    return {
         'result_total': result_total,
         'current_page': page,
         'result': result_one_page_list,
         'pagination': pagination
-    })
+    }
+
+
+@post.route('/post', methods=['GET'])
+def show_all_post():
+    # params
+    page_args = {
+        "page": fields.Int(missing=1, validate=lambda p: p > 0),
+        "size": fields.Int(missing=5, validate=lambda p: p > 0)
+    }
+    args = parser.parse(page_args, request)
+    page = args['page']
+    size = args['size']
+
+    result = search_all_post(page, size)
+    
+    return jsonify(result)
 
 
 @post.route('/post/<int:pid>', methods=['GET'])

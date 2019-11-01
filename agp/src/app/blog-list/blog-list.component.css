@@ -1,0 +1,11 @@
+.header{
+	/*display: inline-block;*/
+}
+.footer{
+	position: fixed;
+	bottom: 0;
+}
+
+.button-center{
+	width: 180px !important;
+}

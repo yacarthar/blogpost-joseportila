@@ -1,0 +1,60 @@
+
+<div class="navbar navbar-expand-lg navbar-light bg-dark justify-content-between sticky-top">
+  <button mat-raised-button (click)="openCreateDialog()" 
+    class="btn d-inline-block">
+    Create Article!
+  </button>
+
+  <form class="form-inline float-right">
+    <input class="form-control" type="search" placeholder="Search posts..." name="keyword"
+      [(ngModel)]="keyword">
+    <select class="custom-select" id="inputGroupSelect04" name="search_by"
+      [(ngModel)]="search_by">
+      <option value="title">Title</option>
+      <option value="topic">Topic</option>
+      <option value="content">Content</option>
+    </select>
+    <select class="custom-select" id="inputGroupSelect04" name="sort"
+      [(ngModel)]="sort">
+      <option value="date">Date</option>
+      <option value="title">Title</option>
+    </select>
+    <button class="btn btn-outline-success" type="submit"
+    (click) = "searchClick();"
+    >Search</button>
+  </form>
+</div>
+
+
+
+<div style="margin: 100px 0 0 0">
+  <div class="body-content">
+  	<div *ngFor="let post of results" class="row">
+      <div class="d-inline-block col-md-11">
+    		<a [routerLink]="['/detail', post.pid]">{{post.title}}</a>
+        <p>{{post.content | slice:0:400}} ...</p>
+      </div>
+      <div class="d-inline-block col-md-1">
+        <button mat-raised-button (click)="openEditDialog(post.pid, post.title, post.content)">Edit</button>
+        <button mat-raised-button (click)="openDeleteDialog(post.pid)">Delete</button>
+      </div>
+  	</div>
+  </div>
+  <div *ngIf="!display" class="body-process">Loading......</div>
+</div>
+
+<div class="container footer">
+  <div class="d-flex justify-content-center">
+    <div>
+      <button class="btn btn-primary">
+        <button  (click)=firstPageClick()>First</button>
+        <button *ngIf="!previous_page" (click)=prevClick() disabled>Prev</button>
+        <button *ngIf="previous_page" (click)=prevClick()>Prev</button>
+        <button class="button-center">Page: {{current_page}}/{{page_total}} </button>
+        <button *ngIf="!next_page" (click)=nextClick() disabled>Next</button>
+        <button *ngIf="next_page" (click)=nextClick()>Next</button>
+        <button  (click)=lastPageClick()>Last</button>
+      </button>
+    </div>
+  </div>
+</div>

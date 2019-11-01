@@ -1,38 +1,47 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { AppRoutingModule } from './app-routing.module';
+import { HttpClientModule } from "@angular/common/http";
+import { FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {
+  MatDialogModule,
+  MatFormFieldModule,
+  MatButtonModule,
+  MatInputModule } from '@angular/material';
 
 import { AppComponent } from './app.component';
-import { AppRoutingModule } from './app-routing.module';
+import { ModalComponent } from './modal/modal.component';
+import { BlogDetailComponent } from './blog-detail/blog-detail.component';
+import { BlogListComponent } from './blog-list/blog-list.component';
+import { ModalEditComponent } from './modal-edit/modal-edit.component';
+import { ModalDeleteComponent } from './modal-delete/modal-delete.component';
 
-import { BlogService } from './blog.service';
-import { BlogGetComponent } from './blog-get/blog-get.component';
-import { BlogAddComponent } from './blog-add/blog-add.component';
-import { BlogEditComponent } from './blog-edit/blog-edit.component';
 
-import { HttpClientModule } from "@angular/common/http";
-import { ReactiveFormsModule } from "@angular/forms";
-import { SlimLoadingBarModule } from 'ng2-slim-loading-bar';
-import { BlogGetoneComponent } from './blog-getone/blog-getone.component';
-import { FormsModule } from '@angular/forms';
-import { BlogSearchComponent } from './blog-search/blog-search.component';
 @NgModule({
   declarations: [
     AppComponent,
-    BlogGetComponent,
-    BlogAddComponent,
-    BlogEditComponent,
-    BlogGetoneComponent,
-    BlogSearchComponent,
+    BlogDetailComponent,
+    ModalComponent,
+    BlogListComponent,
+    ModalEditComponent,
+    ModalDeleteComponent
   ],
   imports: [
     BrowserModule,
+    // MaterialModule,
     AppRoutingModule,
-    SlimLoadingBarModule,
-    ReactiveFormsModule,
     HttpClientModule,
-    FormsModule
+    BrowserAnimationsModule,
+    FormsModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatButtonModule,
+    MatInputModule
+    // NgbModule
   ],
-  providers: [BlogService],
-  bootstrap: [AppComponent]
+
+  bootstrap: [AppComponent],
+  entryComponents: [ModalComponent, ModalEditComponent, ModalDeleteComponent]
 })
-export class AppModule {}
+export class AppModule { }

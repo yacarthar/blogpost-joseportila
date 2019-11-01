@@ -15,4 +15,4 @@ class User(HttpLocust):
     task_set = UserTaskSet 
     min_wait = 5000 
     max_wait = 15000
-    host = "http://localhost"
+    host = "http://localhost:5000"
