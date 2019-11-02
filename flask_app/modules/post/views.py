@@ -17,17 +17,20 @@ cache = db_cache.cache()
 
 
 @cache.cached(timeout=60)
-def search_all_post(page, size):
+def get_all_post(page, size):
     # query
     query = {}
     result_total = Post.count_documents(query)
 
     # get result to display
     # time.sleep(5)
-    page_total = result_total // size + 1
+    page_total = (result_total // size if (result_total % size ==0)
+        else result_total // size + 1)
     page = min(page_total, page)
     skips = size * (page - 1)
-    result_one_page = Post.find(query).skip(skips).limit(size)
+    result_one_page = ( Post.find(query).skip(skips).limit(size)
+        .sort("_id", pymongo.DESCENDING)
+    )
     result_one_page_list = []
     for item in result_one_page:
         result_one_page_list.append({
@@ -54,7 +57,7 @@ def search_all_post(page, size):
         pagination['previous_page'] = url.format(page - 1)
     return {
         'result_total': result_total,
-        'current_page': page,
+        'current_page': url.format(page),
         'result': result_one_page_list,
         'pagination': pagination
     }
@@ -71,7 +74,7 @@ def show_all_post():
     page = args['page']
     size = args['size']
 
-    result = search_all_post(page, size)
+    result = get_all_post(page, size)
     
     return jsonify(result)
 
@@ -114,7 +117,8 @@ def search_post():
     result_total = Post.count_documents(query)
 
     # get result to display
-    page_total = result_total // size + 1
+    page_total = (result_total // size if (result_total % size == 0)
+        else result_total // size + 1)
     page = min(page_total, page)
     skips = size * (page - 1)
     result_one_page = Post.find(query).skip(skips).limit(size).sort(sort, pymongo.DESCENDING)
@@ -145,7 +149,7 @@ def search_post():
 
     return jsonify({
         'result_total': result_total,
-        'current_page': page,
+        'current_page': url.format(page),
         'result': result_one_page_list,
         'pagination': pagination
     })
@@ -176,6 +180,7 @@ def create_post():
 
     # insert
     Post.insert_one(data)
+    cache.flush() # delete cache
     return jsonify({
         'message': 'create success',
         'pid': data['pid']
@@ -196,6 +201,7 @@ def update_post(pid):
         {'pid': pid},
         {'$set': data},
     )
+    cache.flush() # delete cache
     # return redirect(url_for('post.show_one_post', pid=pid))
     return jsonify({'message': 'ok'})
 
@@ -207,6 +213,7 @@ def delete_post(pid):
         return jsonify({'message': 'wrong pid'})
     # delete
     Post.delete_one({'pid': pid})
+    cache.flush() # delete cache
     return jsonify({
         'message': 'delete success',
         'pid': pid
