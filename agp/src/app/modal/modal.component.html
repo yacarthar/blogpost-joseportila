@@ -1,21 +1,30 @@
-<h1 mat-dialog-title>Create Article</h1>
+
 <div mat-dialog-content>
-  <p>Title</p>
+
   <mat-form-field style="width: 100%">
-    <input matInput [(ngModel)]="data.title">
+    <input matInput [(ngModel)]="data.title" placeholder="Title" [formControl]="title" required>
+    <mat-error *ngIf="title.invalid">{{getErrorMessage()}}</mat-error>
+    
   </mat-form-field>
 
-  <p>Content</p>
+
   <mat-form-field style="width: 100%">
-    <textarea rows=10 style="height: 300px" matInput class="largeInput"
-     [(ngModel)]="data.content"
+    <textarea  rows=10
+      matInput
+      [(ngModel)]="data.content"
+      placeholder="Content"
+      [formControl]="content" required
     ></textarea>
+    <mat-error *ngIf="content.invalid">{{getErrorMessage()}}</mat-error>
   </mat-form-field>
 </div>
 
 
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Submit</button>
+  <button mat-button [mat-dialog-close]="data" cdkFocusInitial
+    
+  >Submit</button>
+
 </div>
 

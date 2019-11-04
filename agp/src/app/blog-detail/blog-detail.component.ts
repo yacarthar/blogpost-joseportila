@@ -1,6 +1,6 @@
 import { Component, OnInit, NgModule, Inject } from '@angular/core';
 import { HttpService } from  '../shared/service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 class article {
 	constructor(
 		public content: string,
@@ -25,12 +25,16 @@ export class BlogDetailComponent implements OnInit {
 	time: string;
 	title: string;
 	url: string;
+  sub01;
   current_url = this.route['_routerState'].snapshot.url;
   id = this.current_url.slice(this.current_url.lastIndexOf('/')+1);
 
+
+
   constructor (
 	  private hs: HttpService,
-	  private route: ActivatedRoute
+	  private route: ActivatedRoute,
+    private router: Router,
   ) {}
 
   ngOnInit() {
@@ -45,4 +49,20 @@ export class BlogDetailComponent implements OnInit {
   	});
   }
 
+  
+
+  back() {
+    this.sub01 = this.route.queryParamMap.subscribe(queryParams => {
+    var x = queryParams.get("from")
+    console.log(x);
+    if (!x) {
+      x = '/post';
+    }
+    this.router.navigateByUrl(x);
+    })
+  }
+
+  // ngOnDestroy() {
+  //   if (this.sub01) this.sub01.unsubscribe();
+  // }
 }

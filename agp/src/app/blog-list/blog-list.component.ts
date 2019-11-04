@@ -1,12 +1,13 @@
-import { Component, OnInit, NgModule, Inject, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, NgModule, Inject } from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { ModalComponent } from '../modal/modal.component';
 import { ModalEditComponent } from '../modal-edit/modal-edit.component';
 import { ModalDeleteComponent } from '../modal-delete/modal-delete.component';
 import { HttpService } from  '../shared/service';
-
+import { NotifierService } from 'angular-notifier';
 
 class article {
 	constructor(
@@ -30,9 +31,12 @@ export class BlogListComponent implements OnInit {
   titleEditModal: string;
   contentEditModal: string;
 
+  page_num: string;
+  page_size: string;
+
 	result_total: number;
   page_total: number;
-	current_page: number;
+	current_page: string;
 	first_page: string;
 	last_page: string;
 	next_page: string;
@@ -45,16 +49,18 @@ export class BlogListComponent implements OnInit {
   keyword: string;
   sort: string = 'date';
 
-  x: boolean;
+
 
   constructor(
   	public dialog: MatDialog,
     private hs: HttpService,
-    public cd: ChangeDetectorRef,
+    private route: ActivatedRoute,
+    private router: Router,
+    private notifier: NotifierService,
   ) {}
 
   parseData(path) {
-    this.display = false;
+    // this.display = false;
     var url = 'http://127.0.0.1:5000';
     this.hs.getArticles(url + path)
     .subscribe(data => {
@@ -64,7 +70,13 @@ export class BlogListComponent implements OnInit {
       this.last_page = data['pagination']['last_page'];
       this.next_page = data['pagination']['next_page'];
       this.previous_page = data['pagination']['previous_page'];
-      this.x = false;
+      this.page_total = ((this.result_total % parseInt(this.page_size, 10) == 0)?
+        Math.floor(this.result_total/parseInt(this.page_size, 10))
+        : Math.floor(this.result_total/parseInt(this.page_size, 10)) + 1
+      );
+      this.page_num = this.current_page.slice(
+        this.current_page.indexOf('page=') + 5, this.current_page.indexOf('&')
+      )
       this.results = data['result'].map(
         item => {return new article(
                   item['content'],
@@ -76,7 +88,6 @@ export class BlogListComponent implements OnInit {
                   );
           }
       );
-      this.page_total = Math.floor(this.result_total/5) + 1;
       console.log(this.results);
       console.log(url+path);
     this.display = true;
@@ -84,7 +95,14 @@ export class BlogListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.parseData('/post');
+    this.route.queryParamMap.subscribe(queryParams => {
+      this.page_num = queryParams.get("page");
+      if (!this.page_num ) {this.page_num='1'}
+      this.page_size = queryParams.get("size", );
+      if (!this.page_size) {this.page_size='5'}
+      console.log(this.page_num);
+    })
+    this.parseData(`/post?page=${this.page_num}&size=${this.page_size}`);
   }
 
   nextClick() {
@@ -115,8 +133,8 @@ export class BlogListComponent implements OnInit {
 
   openCreateDialog(): void {
     const dialogRef = this.dialog.open(ModalComponent, {
-      width: '720px',
-      height: '480px',
+      width: '960px',
+      height: '400px',
       data: {title: this.titleCreateModal, content: this.contentCreateModal}
     });
 
@@ -126,11 +144,18 @@ export class BlogListComponent implements OnInit {
         console.log(this.titleCreateModal);
         this.contentCreateModal = result.content
         console.log(this.contentCreateModal);
-        this.hs.addArticle(this.titleCreateModal, this.contentCreateModal);
+        this.hs.addArticle(this.titleCreateModal, this.contentCreateModal,(mes) => {
+          this.notifier.notify('info', mes);
+          this.parseData('/post');
+          this.router.navigateByUrl('/post');
+        }
+        )
 
       }
     });
   }
+
+
 
   openEditDialog(pid, title, content): void {
     const dialogRef = this.dialog.open(ModalEditComponent, {
@@ -145,27 +170,38 @@ export class BlogListComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
           this.titleEditModal = result.title;
-          console.log(this.titleEditModal);
+          console.log(`imput title:: ` + this.titleEditModal);
           this.contentEditModal = result.content
-          console.log(this.contentEditModal);
-          this.hs.updateArticle(this.titleEditModal, this.contentEditModal, pid);
-          this.parseData(`/post?page=` + this.current_page);
+          console.log(`imput content: ` + this.contentEditModal);
+          this.hs.updateArticle(this.titleEditModal,this.contentEditModal,pid,
+           (mes) => {
+             this.notifier.notify('info', mes);
+             this.parseData(this.current_page);
+          });
         }
     });
   }
 
   openDeleteDialog(pid): void {
     const dialogRef = this.dialog.open(ModalDeleteComponent, {
-      width: '200px',
+      width: '250px',
       height: '150px',
     });
     // console.log(pid);
     // console.log(dialogRef);
 
     dialogRef.afterClosed().subscribe(result => {
-      this.hs.deleteArticle(pid);
-      // console.log(result);
-        
+      this.hs.deleteArticle(pid, (mes) => {
+        this.notifier.notify('info', mes);
+        this.parseData(this.current_page);
+      }
+      );
+  });
+  }
+
+  goDetail(id) {
+    this.router.navigate([`/detail/${id}`], {
+      queryParams:{'from': `${this.current_page}`}
     });
   }
 }

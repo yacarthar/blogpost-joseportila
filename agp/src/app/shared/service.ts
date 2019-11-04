@@ -23,7 +23,7 @@ export class HttpService {
     return this.http.get(this.uri + '/' + id)
   }
 
-  addArticle(title, content) {
+  addArticle(title, content, callback) {
     const obj = {
       'title': title,
       'content': content
@@ -31,11 +31,11 @@ export class HttpService {
     this.http.post(this.uri, obj).subscribe(
       res => {
         this.mes = res['message']
-        console.log(this.mes);
+        callback(this.mes);
       });
   }
 
-  updateArticle(title, content, id, cb?) {
+  updateArticle(title, content, id, callback) {
     const obj = {
       'title': title,
       'content': content
@@ -43,17 +43,18 @@ export class HttpService {
     return this.http.put(this.uri + '/' + id, obj)
         .subscribe(res => {
         this.mes = res['message']
-        console.log(this.mes);
-        if (cb) cb();
-
+        console.log(`update: ` + this.mes);
+        // callback.bind(this)(arg);
+        callback(this.mes);
       });
   }
 
-  deleteArticle(id) {
+  deleteArticle(id, callback) {
     return this.http.delete(this.uri + '/' + id)
         .subscribe(res => {
         this.mes = res['message']
-        console.log(this.mes);
+        console.log(`delete: ` + this.mes);
+        callback(this.mes);
       });
   }
 

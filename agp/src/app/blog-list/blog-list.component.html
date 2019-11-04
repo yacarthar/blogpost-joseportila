@@ -31,7 +31,7 @@
   <div class="body-content">
   	<div *ngFor="let post of results" class="row">
       <div class="d-inline-block col-md-11">
-    		<a [routerLink]="['/detail', post.pid]">{{post.title}}</a>
+    		<a (click)="goDetail(post.pid)" href="javascript:void(0)">{{post.title}}</a>
         <p>{{post.content | slice:0:400}} ...</p>
       </div>
       <div class="d-inline-block col-md-1">
@@ -50,7 +50,7 @@
         <button  (click)=firstPageClick()>First</button>
         <button *ngIf="!previous_page" (click)=prevClick() disabled>Prev</button>
         <button *ngIf="previous_page" (click)=prevClick()>Prev</button>
-        <button class="button-center">Page: {{current_page}}/{{page_total}} </button>
+        <button class="button-center">Page: {{page_num}}/{{page_total}} </button>
         <button *ngIf="!next_page" (click)=nextClick() disabled>Next</button>
         <button *ngIf="next_page" (click)=nextClick()>Next</button>
         <button  (click)=lastPageClick()>Last</button>
@@ -58,3 +58,4 @@
     </div>
   </div>
 </div>
+<notifier-container></notifier-container>
