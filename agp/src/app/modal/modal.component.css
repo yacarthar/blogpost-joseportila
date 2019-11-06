@@ -1,4 +1,9 @@
-.largeInput {
-	height: 100px;
-    line-height: 100px;
+.footer {
+	display: flex;
+	justify-content: center;
+}
+
+.btn {
+	margin-right: 5px;
+	margin-left: 5px;
 }

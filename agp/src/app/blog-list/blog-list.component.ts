@@ -30,6 +30,7 @@ export class BlogListComponent implements OnInit {
     contentCreateModal: string;
     titleEditModal: string;
     contentEditModal: string;
+    deleteModal: boolean;
 
     page_num: string;
     page_size: string;
@@ -98,44 +99,80 @@ export class BlogListComponent implements OnInit {
         this.route.queryParamMap.subscribe(queryParams => {
             this.page_num = queryParams.get("page");
             if (!this.page_num ) {this.page_num='1'}
-            this.page_size = queryParams.get("size", );
+            this.page_size = queryParams.get("size");
             if (!this.page_size) {this.page_size='5'}
             console.log(this.page_num);
+            this.keyword = queryParams.get("keyword");
+            console.log(this.keyword);
+            this.search_by = queryParams.get("search_by");
+            console.log(this.search_by);
+            this.sort = queryParams.get("sort");
+            console.log(this.sort);
         })
-        this.parseData(`/post?page=${this.page_num}&size=${this.page_size}`);
+        if (!(!this.keyword || this.keyword.length === 0 || !this.keyword.trim() )) {
+            this.parseData(`/post/search`
+                +`?page=${this.page_num}`
+                +`&size=${this.page_size}`
+                +`&keyword=${this.keyword}`
+                +`&search_by=${this.search_by}`
+                +`&sort=${this.sort}`
+            )
+        } else {
+                this.parseData(`/post?page=${this.page_num}&size=${this.page_size}`);
+            }
     }
 
     nextClick() {
         this.parseData(this.next_page);
+        this.router.navigateByUrl(this.next_page); 
     }
 
     prevClick() {
         this.parseData(this.previous_page);
+        this.router.navigateByUrl(this.previous_page);
     }
 
     firstPageClick() {
         this.parseData(this.first_page);
+        this.router.navigateByUrl(this.first_page);
     }
 
     lastPageClick() {
         this.parseData(this.last_page);
+        this.router.navigateByUrl(this.last_page);
     }
 
     searchClick() {
-        console.log(this.sort);
-        console.log(this.search_by);
-        console.log(this.keyword);
-        this.parseData(`/post/search` +
-            `?keyword=${this.keyword}` +
-            `&search_by=${this.search_by}` +
-            `&sort=${this.sort}`);
+        var url = `/post/search`;
+        var param: any = {};
+
+        if (!(!this.keyword || this.keyword.length === 0 || !this.keyword.trim() )) {
+            url += `?keyword=${this.keyword}`;
+            param['keyword'] = this.keyword;
+            if (this.search_by && this.search_by != "") {
+                url += `&search_by=${this.search_by}`;
+                param['search_by'] = this.search_by;
+            };
+            if (this.sort && this.sort != "") {
+                url += `&sort=${this.sort}`;
+                param['sort'] = this.sort;
+            };
+            this.router.navigate([`/post`], {queryParams:param});
+            this.parseData(url);
+        }
     }
 
+    homeClick() {
+        this.parseData('/post');
+        this.router.navigateByUrl('/post');
+    }
+    
     openCreateDialog(): void {
         const dialogRef = this.dialog.open(ModalComponent, {
             width: '960px',
             height: '400px',
-            data: {title: this.titleCreateModal, content: this.contentCreateModal}
+            disableClose: true,
+            data: {title: this.titleCreateModal = '', content: this.contentCreateModal=''}
         });
 
         dialogRef.afterClosed().subscribe(result => {
@@ -161,6 +198,7 @@ export class BlogListComponent implements OnInit {
         const dialogRef = this.dialog.open(ModalEditComponent, {
             width: '960px',
             height: '400px',
+            disableClose: true,
             data: {
                 title: this.titleEditModal = title,
                 content: this.contentEditModal = content
@@ -184,18 +222,21 @@ export class BlogListComponent implements OnInit {
 
     openDeleteDialog(pid): void {
         const dialogRef = this.dialog.open(ModalDeleteComponent, {
+            disableClose: true,
             width: '250px',
             height: '150px',
+            data: Boolean
         });
-        // console.log(pid);
-        // console.log(dialogRef);
 
-        dialogRef.afterClosed().subscribe(result => {
-            this.hs.deleteArticle(pid, (mes) => {
+        dialogRef.afterClosed().subscribe((result: any) => {
+            // console.log(result)})
+            if (result) {
+                console.log(result)
+                this.hs.deleteArticle(pid, (mes) => {
                     this.notifier.notify('info', mes);
                     this.parseData(this.current_page);
-                }
-            );
+                });
+            };
         });
     }
 

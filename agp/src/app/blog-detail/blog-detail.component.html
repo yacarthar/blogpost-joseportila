@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-<div class="navbar navbar-expand-lg navbar-light bg-dark justify-content-between sticky-top">
-  <button class="btn btn-success"
+<div class="navbar navbar-expand-lg navbar-light justify-content-between sticky-top">
+  <button class="btn btn-primary"
   	(click)="back()"
   >Back
 	</button>
@@ -10,8 +10,10 @@
 <div class="card" style="width: 58rem;">
   <div class="card-body">
     <h3 class="card-title">{{title}}</h3>
-    <h5>{{time}}</h5>
-    <p class="card-text">{{content}}</p>
+    <p style="font-weight: 500;">{{time | date:"dd/MM/yyyy, h:mm a" }}</p>
+    <p class="card-text"
+    	style="text-align: justify;" 
+    	>{{content}}</p>
 
   </div>
 </div>

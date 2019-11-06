@@ -1,5 +1,5 @@
 <p>Confirm delete ?</p>
-<div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button mat-dialog-close cdkFocusInitial>Delete</button>
+<div mat-dialog-actions class="footer">
+  <button class="btn btn-outline-primary"  (click)="onNoClick()">Cancel</button>
+  <button class="btn btn-primary" [mat-dialog-close]="data" cdkFocusInitial>Delete</button>
 </div>

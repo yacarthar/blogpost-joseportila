@@ -92,19 +92,31 @@ def show_one_post(pid):
 @post.route('/post/search', methods=['GET'])
 def search_post():
     # params
-    search_args = {
-        "page": fields.Int(missing=1, validate=lambda p: p > 0),
-        "size": fields.Int(missing=5, validate=lambda p: p > 0),
-        'keyword': fields.Str(),
-        'search_by': fields.Str(missing='title'),
-        'sort': fields.Str(missing='time'),
-    }
+    try:
+        search_args = {
+            "page": fields.Int(missing=1, validate=lambda p: p > 0),
+            "size": fields.Int(missing=5, validate=lambda p: p > 0),
+            'keyword': fields.Str(required=True),
+            'search_by': fields.Str(missing='title'),
+            'sort': fields.Str(missing='time')
+                # validate=lambda p: p in ['title', 'time']
+            # )
+        }
+    except ValidationError:
+        return jsonify({'message': 'Validation Error'})
+
     args = parser.parse(search_args, request)
     page = args['page']
     size = args['size']
     keyword = args['keyword']
-    search_by = args['search_by']
-    sort = args['sort']
+    if args['search_by']:
+        search_by = args['search_by']
+    else:
+        search_by = 'search_by'
+    if args['sort']:
+        sort = args['sort']
+    else:
+        sort = 'title'
 
     #query
     query = {}
@@ -119,8 +131,13 @@ def search_post():
     # get result to display
     page_total = (result_total // size if (result_total % size == 0)
         else result_total // size + 1)
+    if page_total == 0:
+        page_total +=1
     page = min(page_total, page)
     skips = size * (page - 1)
+    print(page)
+    print(size)
+    print(skips)
     result_one_page = Post.find(query).skip(skips).limit(size).sort(sort, pymongo.DESCENDING)
     result_one_page_list = []
     for item in result_one_page:

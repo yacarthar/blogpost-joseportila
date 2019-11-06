@@ -55,12 +55,12 @@ Post = mydb["post"]
 #             )
 
 
-a = Post.find({})
-for item in a:
-    new_pid = int(item['pid'])
-    print(new_pid)
-    Post.find_one_and_update(
-            {'pid': item['pid']},
-            {'$set': {'pid': new_pid  }},
-            return_document=ReturnDocument.AFTER
-            )
+# a = Post.find({})
+# for item in a:
+#     new_pid = int(item['pid'])
+#     print(new_pid)
+#     Post.find_one_and_update(
+#             {'pid': item['pid']},
+#             {'$set': {'pid': new_pid  }},
+#             return_document=ReturnDocument.AFTER
+#             )

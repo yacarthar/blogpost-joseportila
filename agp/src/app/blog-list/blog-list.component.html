@@ -1,69 +1,41 @@
 
- <!-- bg-dark -->
-<!-- class="form-inline float-right" -->
-<form class="header">
-<!--     <input class="form-control search-item" name="keyword"
-      type="search" placeholder="Search posts"
-      [(ngModel)]="keyword"> -->
+<div class="header">
+  <button class="btn btn-primary header-button" (click)="homeClick();">HOME</button>
+<form class="header-form">
 
-<!--     <select class="custom-select search-item" name="search_by" 
-      id="inputGroupSelect04"
-      [(ngModel)]="search_by">
-      <option value="" disabled selected>Select your option</option>
-      <option value="title" >Title</option>
-      <option value="topic">Topic</option>
-      <option value="content">Content</option>
-    </select> -->
-
-    <mat-form-field class="example-full-width">
-        
-      <input  matInput name="keyword"
-      type="search" placeholder="Search posts"
-      [(ngModel)]="keyword">
-      </mat-form-field>
-
-
-
-    <mat-form-field>
-      <mat-label>Search by ...</mat-label>
-      <mat-select name="search_by"
-                 [(ngModel)]="search_by">
-        <mat-option value="title" > Title</mat-option>
-        <mat-option value="topic" > Topic</mat-option>
-        <mat-option value="content" > Content</mat-option>
-      </mat-select>
+  <mat-form-field class="example-full-width">
+      
+    <input  matInput name="keyword"
+    type="search" placeholder="Search posts"
+    [(ngModel)]="keyword">
     </mat-form-field>
 
- <!--    <select class="custom-select search-item" name="sort" 
-      id="inputGroupSelect04" placeholder="Sort by..."
-      [(ngModel)]="sort">
-      <option value="date">Date</option>
-      <option value="title">Title</option>
-    </select>
-    <button class="btn btn-primary"
-      type="submit"
-      (click) = "searchClick();"
-    >Search</button> -->
-  
-    <mat-form-field>
-      <mat-label>Sort by ...</mat-label>
-      <mat-select name="sort" [(ngModel)]="sort">
-        <mat-option value="date" > Date</mat-option>
-        <mat-option value="title" > Title</mat-option>
-      </mat-select>
-    </mat-form-field>
-    <button mat-button class="btn btn-primary" type="submit" (click)="searchClick();">Search</button>
+  <mat-form-field>
+    <mat-label>Search by ...</mat-label>
+    <mat-select name="search_by"
+               [(ngModel)]="search_by">
+      <mat-option value="title" > Title</mat-option>
+      <mat-option value="topic" > Topic</mat-option>
+      <mat-option value="content" > Content</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Sort by ...</mat-label>
+    <mat-select name="sort" [(ngModel)]="sort">
+      <mat-option value="time" > Date</mat-option>
+      <mat-option value="title" > Title</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <button class="btn btn-primary header-button" type="submit" (click)="searchClick();">Search</button>
 </form>
+</div>
 
-<!-- class="d-inline-block" -->
-<!-- style="width: 90%;" -->
-<!-- class="d-inline-block col-md-11" -->
-<!-- class="row" -->
-<!-- mat-raised-button -->
+
 <div class="body">
   <div class="button-create">
     <button (click)="openCreateDialog()"
-    class="btn btn-primary">
+    class="btn btn-primary button-edit">
       Create
     </button>
   </div>

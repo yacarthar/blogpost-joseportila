@@ -2,21 +2,44 @@
 <div mat-dialog-content>
   
   <mat-form-field style="width: 100%">
-    <input matInput [(ngModel)]="data.title">
+    <input matInput [(ngModel)]="data.title"
+      placeholder="Title"
+      [formControl]="title"
+      required>
+
+    <div *ngIf="title.errors && (title.dirty || title.touched)">
+      <mat-error *ngIf="title.errors.required">title is required</mat-error>
+      <mat-error *ngIf="title.errors.minlength">Minimum 5 characters</mat-error>
+      <mat-error *ngIf="title.errors.pattern">Letters & numeric digit only !</mat-error>
+    </div>
   </mat-form-field>
 
   <mat-form-field style="width: 100%">
     <textarea rows="10" style="height: 200px!important line-height:40px" 
       matInput 
-      [(ngModel)]="data.content">
+      [(ngModel)]="data.content"
+      placeholder="Content"
+      [formControl]="content"
+      required>
     </textarea>
+
+    <div *ngIf="content.errors && (content.dirty || content.touched)">
+      <mat-error *ngIf="content.errors.required">content is required</mat-error>
+      <mat-error *ngIf="content.errors.minlength">Minimum 5 characters</mat-error>
+      <mat-error *ngIf="content.errors.pattern">Letters & numeric digit only !</mat-error>
+    </div>
   </mat-form-field>
+
 </div>
 
 
-<div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Submit</button>
+<div mat-dialog-actions class="footer">
+  <button class="btn btn-outline-primary" (click)="onNoClick()">Cancel</button>
+  <button class="btn btn-primary"
+    [mat-dialog-close]="data"
+    cdkFocusInitial
+    [disabled]= "content.errors || title.errors"
+  >Submit</button>
 </div>
 
 

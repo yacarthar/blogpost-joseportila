@@ -1,8 +1,23 @@
 .header{
+	margin-top: 30px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+
+.header-form{
+
 	display: flex;
 	flex-direction: row;
 	justify-content: flex-end;
 }
+.header-button {
+	margin-top: 8px;
+	width: 72.56px;
+	height: 38px;
+}
+
 .search-item {
 	width: 20%;
 }
@@ -50,6 +65,7 @@
 .button-delete {
 	/*padding: 5px;*/
 	background-color: white;
+	color: black;
 	width: 69px;
 }
 
@@ -75,6 +91,10 @@
 	background-color: white;
 	color: black;
 	width: 69px;
+}
+.footer-button:hover {
+	background-color: #0069d9;
+
 }
 .footer-button-center{
 	width: 180px !important;
