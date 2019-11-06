@@ -865,6 +865,13 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
+"@ng-bootstrap/ng-bootstrap@^5.1.2":
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/@ng-bootstrap/ng-bootstrap/-/ng-bootstrap-5.1.2.tgz#94ad3c7debbda4585592e11c5d81683faea96c1e"
+  integrity sha512-wNH8/xi4+Tx4CSUlJNPphkTva6/TnhhLhoPnSW36pvW/BSJSfX8IribDl666vyKGcJPPprSK0AXECfpe2NkKvg==
+  dependencies:
+    tslib "^1.9.0"
+
 "@ngtools/webpack@8.3.15":
   version "8.3.15"
   resolved "https://registry.yarnpkg.com/@ngtools/webpack/-/webpack-8.3.15.tgz#1b523e56693bc459accc734a0d9b93f3e1d1b6b2"
@@ -1220,6 +1227,13 @@ amdefine@>=0.0.4:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
   integrity sha1-SlKCrBZHKek2Gbz9OtFR+BfOkfU=
+
+angular-notifier@^6.0.1:
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/angular-notifier/-/angular-notifier-6.0.1.tgz#54111ba4fab70b3b3600dbc87ed2dd63a4847aab"
+  integrity sha512-eC312pNkHfjBU1nflOxtRKbkuxZGthZj23wK1unZ9u+sIhdrUm2Fd2j4Tud8+5z9wQX+ec59v4pBfayO3AFx+Q==
+  dependencies:
+    tslib "^1.9.0"
 
 ansi-colors@4.1.1:
   version "4.1.1"
@@ -5093,6 +5107,11 @@ neo-async@^2.5.0, neo-async@^2.6.0, neo-async@^2.6.1:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.1.tgz#ac27ada66167fa8849a6addd837f6b189ad2081c"
   integrity sha512-iyam8fBuCUpWeKPGpaNMetEocMt364qkCsfL9JuhjXX6dRnguRVOfk2GZaDpPjcOKiiXCPINZC1GczQ7iTq3Zw==
+
+ng-push@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/ng-push/-/ng-push-0.2.2.tgz#61c16c3ef8590947d3bef8e19d84682017c05127"
+  integrity sha512-ch7qHGNWUBa1pJvdmzGpG7PbFCP3T78FCmBzELh21o4HRDFKlJgKTbchzz0i+MeexNbD3/pD1kevM0tY/2RVAg==
 
 nice-try@^1.0.4:
   version "1.0.5"

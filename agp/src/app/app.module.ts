@@ -9,6 +9,7 @@ import {
   MatFormFieldModule,
   MatButtonModule,
   MatInputModule } from '@angular/material';
+  import {MatSelectModule} from '@angular/material/select';
 // import { PushNotificationsModule } from 'ng-push';
 import { NotifierModule } from 'angular-notifier';
 
@@ -44,6 +45,7 @@ import { customNotifierOptions } from './shared/notiConfig';
     MatFormFieldModule,
     MatButtonModule,
     MatInputModule,
+    MatSelectModule,
     // NotifierModule.withConfig(customNotifierOptions)
     NotifierModule
     // PushNotificationsModule

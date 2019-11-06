@@ -10,198 +10,198 @@ import { HttpService } from  '../shared/service';
 import { NotifierService } from 'angular-notifier';
 
 class article {
-	constructor(
-		public content: string,
-		public path: string,
-		public pid: string,
-		public time: string,
-		public title: string,
-		public url: string
-	) {}
+    constructor(
+        public content: string,
+        public path: string,
+        public pid: string,
+        public time: string,
+        public title: string,
+        public url: string
+    ) {}
 }
 
 @Component({
-  selector: 'app-blog-list',
-  templateUrl: './blog-list.component.html',
-  styleUrls: ['./blog-list.component.css']
+    selector: 'app-blog-list',
+    templateUrl: './blog-list.component.html',
+    styleUrls: ['./blog-list.component.css']
 })
 export class BlogListComponent implements OnInit {
-	titleCreateModal: string;
-	contentCreateModal: string;
-  titleEditModal: string;
-  contentEditModal: string;
+    titleCreateModal: string;
+    contentCreateModal: string;
+    titleEditModal: string;
+    contentEditModal: string;
 
-  page_num: string;
-  page_size: string;
+    page_num: string;
+    page_size: string;
 
-	result_total: number;
-  page_total: number;
-	current_page: string;
-	first_page: string;
-	last_page: string;
-	next_page: string;
-	previous_page: string;
-  results: Array<article>;
+    result_total: number;
+    page_total: number;
+    current_page: string;
+    first_page: string;
+    last_page: string;
+    next_page: string;
+    previous_page: string;
+    results: Array<article>;
 
-  display: boolean;
+    display: boolean;
 
-  search_by: string = 'title';
-  keyword: string;
-  sort: string = 'date';
-
-
-
-  constructor(
-  	public dialog: MatDialog,
-    private hs: HttpService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private notifier: NotifierService,
-  ) {}
-
-  parseData(path) {
-    // this.display = false;
-    var url = 'http://127.0.0.1:5000';
-    this.hs.getArticles(url + path)
-    .subscribe(data => {
-      this.result_total = data['result_total'];
-      this.current_page = data['current_page'];
-      this.first_page = data['pagination']['first_page'];
-      this.last_page = data['pagination']['last_page'];
-      this.next_page = data['pagination']['next_page'];
-      this.previous_page = data['pagination']['previous_page'];
-      this.page_total = ((this.result_total % parseInt(this.page_size, 10) == 0)?
-        Math.floor(this.result_total/parseInt(this.page_size, 10))
-        : Math.floor(this.result_total/parseInt(this.page_size, 10)) + 1
-      );
-      this.page_num = this.current_page.slice(
-        this.current_page.indexOf('page=') + 5, this.current_page.indexOf('&')
-      )
-      this.results = data['result'].map(
-        item => {return new article(
-                  item['content'],
-                  item['path'],
-                  item['pid'],
-                  item['time'],
-                  item['title'],
-                  item['url']
-                  );
-          }
-      );
-      console.log(this.results);
-      console.log(url+path);
-    this.display = true;
-    });
-  }
-
-  ngOnInit(): void {
-    this.route.queryParamMap.subscribe(queryParams => {
-      this.page_num = queryParams.get("page");
-      if (!this.page_num ) {this.page_num='1'}
-      this.page_size = queryParams.get("size", );
-      if (!this.page_size) {this.page_size='5'}
-      console.log(this.page_num);
-    })
-    this.parseData(`/post?page=${this.page_num}&size=${this.page_size}`);
-  }
-
-  nextClick() {
-		this.parseData(this.next_page);
-	}
-
-  prevClick() {
-    this.parseData(this.previous_page);
-  }
-
-  firstPageClick() {
-    this.parseData(this.first_page);
-  }
-
-  lastPageClick() {
-    this.parseData(this.last_page);
-  }
-
-  searchClick() {
-    console.log(this.sort);
-    console.log(this.search_by);
-    console.log(this.keyword);
-    this.parseData(`/post/search` +
-      `?keyword=${this.keyword}` +
-      `&search_by=${this.search_by}` +
-      `&sort=${this.sort}`);
-  }
-
-  openCreateDialog(): void {
-    const dialogRef = this.dialog.open(ModalComponent, {
-      width: '960px',
-      height: '400px',
-      data: {title: this.titleCreateModal, content: this.contentCreateModal}
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.titleCreateModal = result.title;
-        console.log(this.titleCreateModal);
-        this.contentCreateModal = result.content
-        console.log(this.contentCreateModal);
-        this.hs.addArticle(this.titleCreateModal, this.contentCreateModal,(mes) => {
-          this.notifier.notify('info', mes);
-          this.parseData('/post');
-          this.router.navigateByUrl('/post');
-        }
-        )
-
-      }
-    });
-  }
+    search_by: string;
+    keyword: string;
+    sort: string;
 
 
 
-  openEditDialog(pid, title, content): void {
-    const dialogRef = this.dialog.open(ModalEditComponent, {
-      width: '960px',
-      height: '400px',
-      data: {
-        title: this.titleEditModal = title,
-        content: this.contentEditModal = content
-      }
-    });
+    constructor(
+        public dialog: MatDialog,
+        private hs: HttpService,
+        private route: ActivatedRoute,
+        private router: Router,
+        private notifier: NotifierService,
+    ) {}
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-          this.titleEditModal = result.title;
-          console.log(`imput title:: ` + this.titleEditModal);
-          this.contentEditModal = result.content
-          console.log(`imput content: ` + this.contentEditModal);
-          this.hs.updateArticle(this.titleEditModal,this.contentEditModal,pid,
-           (mes) => {
-             this.notifier.notify('info', mes);
-             this.parseData(this.current_page);
-          });
-        }
-    });
-  }
+    parseData(path) {
+        // this.display = false;
+        var url = 'http://127.0.0.1:5000';
+        this.hs.getArticles(url + path)
+            .subscribe(data => {
+                this.result_total = data['result_total'];
+                this.current_page = data['current_page'];
+                this.first_page = data['pagination']['first_page'];
+                this.last_page = data['pagination']['last_page'];
+                this.next_page = data['pagination']['next_page'];
+                this.previous_page = data['pagination']['previous_page'];
+                this.page_total = ((this.result_total % parseInt(this.page_size, 10) == 0)?
+                        Math.floor(this.result_total/parseInt(this.page_size, 10))
+                        : Math.floor(this.result_total/parseInt(this.page_size, 10)) + 1
+                );
+                this.page_num = this.current_page.slice(
+                    this.current_page.indexOf('page=') + 5, this.current_page.indexOf('&')
+                )
+                this.results = data['result'].map(
+                    item => {return new article(
+                        item['content'],
+                        item['path'],
+                        item['pid'],
+                        item['time'],
+                        item['title'],
+                        item['url']
+                    );
+                    }
+                );
+                console.log(this.results);
+                console.log(url+path);
+                this.display = true;
+            });
+    }
 
-  openDeleteDialog(pid): void {
-    const dialogRef = this.dialog.open(ModalDeleteComponent, {
-      width: '250px',
-      height: '150px',
-    });
-    // console.log(pid);
-    // console.log(dialogRef);
+    ngOnInit(): void {
+        this.route.queryParamMap.subscribe(queryParams => {
+            this.page_num = queryParams.get("page");
+            if (!this.page_num ) {this.page_num='1'}
+            this.page_size = queryParams.get("size", );
+            if (!this.page_size) {this.page_size='5'}
+            console.log(this.page_num);
+        })
+        this.parseData(`/post?page=${this.page_num}&size=${this.page_size}`);
+    }
 
-    dialogRef.afterClosed().subscribe(result => {
-      this.hs.deleteArticle(pid, (mes) => {
-        this.notifier.notify('info', mes);
-        this.parseData(this.current_page);
-      }
-      );
-  });
-  }
+    nextClick() {
+        this.parseData(this.next_page);
+    }
 
-  goDetail(id) {
-    this.router.navigate([`/detail/${id}`], {
-      queryParams:{'from': `${this.current_page}`}
-    });
-  }
+    prevClick() {
+        this.parseData(this.previous_page);
+    }
+
+    firstPageClick() {
+        this.parseData(this.first_page);
+    }
+
+    lastPageClick() {
+        this.parseData(this.last_page);
+    }
+
+    searchClick() {
+        console.log(this.sort);
+        console.log(this.search_by);
+        console.log(this.keyword);
+        this.parseData(`/post/search` +
+            `?keyword=${this.keyword}` +
+            `&search_by=${this.search_by}` +
+            `&sort=${this.sort}`);
+    }
+
+    openCreateDialog(): void {
+        const dialogRef = this.dialog.open(ModalComponent, {
+            width: '960px',
+            height: '400px',
+            data: {title: this.titleCreateModal, content: this.contentCreateModal}
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.titleCreateModal = result.title;
+                console.log(this.titleCreateModal);
+                this.contentCreateModal = result.content
+                console.log(this.contentCreateModal);
+                this.hs.addArticle(this.titleCreateModal, this.contentCreateModal,(mes) => {
+                        this.notifier.notify('info', mes);
+                        this.parseData('/post');
+                        this.router.navigateByUrl('/post');
+                    }
+                )
+
+            }
+        });
+    }
+
+
+
+    openEditDialog(pid, title, content): void {
+        const dialogRef = this.dialog.open(ModalEditComponent, {
+            width: '960px',
+            height: '400px',
+            data: {
+                title: this.titleEditModal = title,
+                content: this.contentEditModal = content
+            }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.titleEditModal = result.title;
+                console.log(`imput title:: ` + this.titleEditModal);
+                this.contentEditModal = result.content
+                console.log(`imput content: ` + this.contentEditModal);
+                this.hs.updateArticle(this.titleEditModal,this.contentEditModal,pid,
+                    (mes) => {
+                        this.notifier.notify('info', mes);
+                        this.parseData(this.current_page);
+                    });
+            }
+        });
+    }
+
+    openDeleteDialog(pid): void {
+        const dialogRef = this.dialog.open(ModalDeleteComponent, {
+            width: '250px',
+            height: '150px',
+        });
+        // console.log(pid);
+        // console.log(dialogRef);
+
+        dialogRef.afterClosed().subscribe(result => {
+            this.hs.deleteArticle(pid, (mes) => {
+                    this.notifier.notify('info', mes);
+                    this.parseData(this.current_page);
+                }
+            );
+        });
+    }
+
+    goDetail(id) {
+        this.router.navigate([`/detail/${id}`], {
+            queryParams:{'from': `${this.current_page}`}
+        });
+    }
 }

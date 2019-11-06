@@ -169,12 +169,12 @@ def create_post():
     # get data body
     data = request.json
     if not data:
-        return jsonify({'message': 'json data missing'})
+        return jsonify({'message': 'Json data missing'})
     pid = data.get('pid', None)
 
     # validate
     if pid is not None and Post.find_one({'pid': pid}):
-        return jsonify({'message': 'post exist'})
+        return jsonify({'message': 'Post exist'})
     if pid is None:
         data['pid'] = generate_pid()
 
@@ -182,7 +182,7 @@ def create_post():
     Post.insert_one(data)
     cache.flush() # delete cache
     return jsonify({
-        'message': 'create success',
+        'message': 'Create success',
         'pid': data['pid']
     })
 
@@ -191,11 +191,11 @@ def create_post():
 def update_post(pid):
     # validate
     if not Post.find_one({'pid': pid}):
-        return jsonify({'message': 'wrong pid'})
+        return jsonify({'message': 'Wrong pid'})
     # get data body
     data = request.json
     if not data:
-        return jsonify({'message': 'json data missing'})
+        return jsonify({'message': 'Json data missing'})
     # update
     Post.find_one_and_update(
         {'pid': pid},
@@ -203,7 +203,7 @@ def update_post(pid):
     )
     cache.flush() # delete cache
     # return redirect(url_for('post.show_one_post', pid=pid))
-    return jsonify({'message': 'ok'})
+    return jsonify({'message': 'Edit success'})
 
 
 @post.route('/post/<int:pid>', methods=['DELETE'])
@@ -215,6 +215,6 @@ def delete_post(pid):
     Post.delete_one({'pid': pid})
     cache.flush() # delete cache
     return jsonify({
-        'message': 'delete success',
+        'message': 'Delete success',
         'pid': pid
     })

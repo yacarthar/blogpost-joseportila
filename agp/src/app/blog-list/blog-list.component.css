@@ -1,11 +1,81 @@
 .header{
-	/*display: inline-block;*/
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
 }
-.footer{
-	position: fixed;
-	bottom: 0;
+.search-item {
+	width: 20%;
 }
 
-.button-center{
+
+.body {
+	margin-top: 100px;
+	margin-bottom: 20px;
+}
+
+.button-create {
+	margin-bottom: 20px;
+	display: flex;
+	justify-content: flex-end;
+}
+
+
+.body-content {
+	display: flex;
+	flex-direction: column;
+	/*justify-content: space-between;*/
+}
+.body-content-article {
+	/*display: flex;*/
+	display: inline-flex;
+	/*flex-direction: row;*/
+	/*justify-content: space-between;*/
+}
+.body-content-text {
+	flex-grow: 1;
+	min-height: 168px;
+}
+.body-content-buttons {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+}
+.button-edit {
+	/*padding: 5px;*/
+	/*background-color: #0069d9;*/
+	color: white;
+	width: 69px;
+
+}
+.button-delete {
+	/*padding: 5px;*/
+	background-color: white;
+	width: 69px;
+}
+
+
+
+
+
+
+
+.footer{
+	/*margin: auto;*/
+	/*position: fixed;*/
+	margin-bottom: 30px;
+	display: flex;
+	justify-content: center;
+}
+.footer-pagination {
+	align-self: center;
+	display: flex;
+	justify-content: center;
+}
+.footer-button {
+	background-color: white;
+	color: black;
+	width: 69px;
+}
+.footer-button-center{
 	width: 180px !important;
 }

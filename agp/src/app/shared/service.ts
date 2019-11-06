@@ -43,7 +43,7 @@ export class HttpService {
     return this.http.put(this.uri + '/' + id, obj)
         .subscribe(res => {
         this.mes = res['message']
-        console.log(`update: ` + this.mes);
+        console.log(`Update: ` + this.mes);
         // callback.bind(this)(arg);
         callback(this.mes);
       });
@@ -53,7 +53,7 @@ export class HttpService {
     return this.http.delete(this.uri + '/' + id)
         .subscribe(res => {
         this.mes = res['message']
-        console.log(`delete: ` + this.mes);
+        console.log(`Delete: ` + this.mes);
         callback(this.mes);
       });
   }
